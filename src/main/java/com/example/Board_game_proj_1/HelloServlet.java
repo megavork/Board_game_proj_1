@@ -1,10 +1,9 @@
 package com.example.Board_game_proj_1;
 
+import util.HibernateConfig;
 import util.JSONParser;
 
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
@@ -26,7 +25,8 @@ public class HelloServlet extends HttpServlet {
         out.println("<h1>" + message + "</h1>");
         out.println("</body></html>");
 
-        JSONParser.JSONParse();
+        HibernateConfig config = new HibernateConfig();
+        config.addMechanics();
 
         //getServletContext().getRequestDispatcher("/jsp/index.jsp").forward(request,response);
     }

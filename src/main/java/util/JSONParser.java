@@ -1,35 +1,32 @@
 package util;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.stream.Collectors;
 
 public class JSONParser {
-    public static void JSONParse() throws IOException {
 
-        //String url = "https://api.boardgameatlas.com/api/search?order_by=popularity&ascending=false&client_id=BE1Mg8GUFu";
-        //String url = "https://api.boardgameatlas.com/api/search?ids=TAAifFP590&client_id=BE1Mg8GUFu";
-        //mechanics
-        String url = "https://api.boardgameatlas.com/api/game/mechanics?client_id=BE1Mg8GUFu";
-        //categories
-        //String url = "https://api.boardgameatlas.com/api/game/categories?client_id=BE1Mg8GUFu";
 
-        URL obj = new URL(url);
-        HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
+    public static JSONArray JSONParseMechanics(String jsonMechanics) throws IOException {
+        JSONObject jsonObject = new JSONObject(jsonMechanics);
+        JSONArray array =  jsonObject.getJSONArray("mechanics");
 
-        connection.setRequestMethod("GET");
+        return array;
+    }
 
-        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-        String inputLine;
-        StringBuffer buffer = new StringBuffer();
 
-        while ((inputLine = in.readLine()) != null) {
-            buffer.append(inputLine+"\n");
+    private String[] JSONParser(String jsonString) {
+        jsonString = jsonString.substring(jsonString.indexOf("["),jsonString.indexOf("]"));
+        String[] result = jsonString.replace("[","").replace("]","").split("},");
+
+        for(int i=0; i<result.length; i++) {
+            result[i]+="}";
         }
-        in.close();
-
-        System.out.println(buffer.toString());
+        return result;
     }
 }

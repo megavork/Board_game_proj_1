@@ -32,6 +32,14 @@
           <element id="library" level="project" name="Maven: com.sun.istack:istack-commons-runtime:3.0.7" />
           <element id="library" level="project" name="Maven: org.jvnet.staxex:stax-ex:1.8" />
           <element id="library" level="project" name="Maven: com.sun.xml.fastinfoset:FastInfoset:1.2.15" />
+          <element id="library" level="project" name="Maven: com.h2database:h2:1.4.190" />
+          <element id="library" level="project" name="Maven: org.hibernate:hibernate-java8:5.1.0.Final" />
+          <element id="library" level="project" name="Maven: org.projectlombok:lombok:1.18.18" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.2.2" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.2.2" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.2.2" />
+          <element id="library" level="project" name="Maven: org.mortbay.jetty:jetty-util:6.1.25" />
+          <element id="library" level="project" name="Maven: org.json:json:20180130" />
         </element>
       </element>
       <element id="directory" name="META-INF">

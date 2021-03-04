@@ -9,7 +9,7 @@ public class Game {
     int min_playtime;
     int max_playtime;
     int min_age;
-    String description;
+    //String description;
     String previewDescription;
     String thumb_url;
     String image_url;
