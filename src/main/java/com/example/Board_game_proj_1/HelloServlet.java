@@ -1,8 +1,6 @@
 package com.example.Board_game_proj_1;
 
-import util.HibernateConfig;
-import util.JSONParser;
-
+import dao.MechanicsDao;
 import java.io.*;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
@@ -25,8 +23,8 @@ public class HelloServlet extends HttpServlet {
         out.println("<h1>" + message + "</h1>");
         out.println("</body></html>");
 
-        HibernateConfig config = new HibernateConfig();
-        config.addMechanics();
+        MechanicsDao mechDao = new MechanicsDao();
+        mechDao.uploadFromAPI();
 
         //getServletContext().getRequestDispatcher("/jsp/index.jsp").forward(request,response);
     }
