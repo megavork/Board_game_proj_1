@@ -1,6 +1,6 @@
 package dao;
 
-import entity.Mechanic;
+import entity.Category;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.json.JSONArray;
@@ -10,57 +10,55 @@ import util.UploadObjectsFromAPI;
 
 import java.util.List;
 
-/*
-    класс для работы с СУБД. все основные методы должны быть описаны здесь
- */
-public class MechanicsDao {
+public class CategoryDao {
+
     /**
      * URL for get data from API
      */
-    final private String URL = "https://api.boardgameatlas.com/api/game/mechanics?client_id=BE1Mg8GUFu";
-    final private String objectName = "mechanics";
+    final private String URL = "https://api.boardgameatlas.com/api/game/categories?client_id=BE1Mg8GUFu";
+    final private String objectName = "categories";
 
     /**
-     * Return one mechanic from base
+     * Return one category from base
      * @param id
      * @return
      */
-    public Mechanic findById(int id) {
-        return HibernateConfig.getSessionFactory().openSession().get(Mechanic.class, id);
+    public Category findById(int id) {
+        return HibernateConfig.getSessionFactory().openSession().get(Category.class, id);
     }
 
     /**
-     * Save Object in mechanic base
-     * @param mechanic
+     * Save Object in category base
+     * @param category
      */
-    public void save(Mechanic mechanic) {
+    public void save(Category category) {
         Session session = HibernateConfig.getSessionFactory().openSession();
         Transaction tx1 = session.beginTransaction();
-        session.save(mechanic);
+        session.save(category);
         tx1.commit();
         session.close();
     }
 
     /**
-     * Update one mechanic in base
-     * @param mechanic
+     * Update one category in base
+     * @param category
      */
-    public void update(Mechanic mechanic) {
+    public void update(Category category) {
         Session session = HibernateConfig.getSessionFactory().openSession();
         Transaction tx1 = session.beginTransaction();
-        session.update(mechanic);
+        session.update(category);
         tx1.commit();
         session.close();
     }
 
     /**
-     * Delete one object from base
-     * @param mechanic
+     * Delete one category from base
+     * @param category
      */
-    public void delete(Mechanic mechanic) {
+    public void delete(Category category) {
         Session session = HibernateConfig.getSessionFactory().openSession();
         Transaction tx1 = session.beginTransaction();
-        session.delete(mechanic);
+        session.delete(category);
         tx1.commit();
         session.close();
     }
@@ -69,9 +67,9 @@ public class MechanicsDao {
      * Return all objects from base
      * @return
      */
-    public List<Mechanic> findAll() {
-        List<Mechanic> mechanics = (List<Mechanic>) HibernateConfig.getSessionFactory().openSession().createQuery("From Mechanic").list();
-        return mechanics;
+    public List<Category> findAll() {
+        List<Category> categories = (List<Category>) HibernateConfig.getSessionFactory().openSession().createQuery("From Category").list();
+        return categories;
     }
 
     /**
@@ -81,19 +79,19 @@ public class MechanicsDao {
         Session session = HibernateConfig.getSessionFactory().openSession();
 
         try {
-            JSONArray jsonArray = UploadObjectsFromAPI.getDateFromAPI(URL,objectName);
+            JSONArray jsonArray = UploadObjectsFromAPI.getDateFromAPI(URL,objectName);    //получили и распарсили JSON
 
             for(int i=0; i<jsonArray.length(); i++) {
                 JSONObject object = jsonArray.getJSONObject(i);
 
-                Mechanic mechanic = new Mechanic((String) object.get("id"), (String) object.get("name"));
+                Category category = new Category((String) object.get("id"), (String) object.get("name"));
                 System.out.println("Try to add data in DataBase");
 
                 Transaction tx = session.beginTransaction();
-                session.save(mechanic);
+                session.save(category);
                 tx.commit();
 
-                System.out.println("\tЗаписи добавлены");
+                System.out.println("Data was added.");
             }
             session.close();
         } catch (Exception e) {

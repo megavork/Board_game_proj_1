@@ -918,142 +918,97 @@ SELECT|sys.sys_config
     <user id="286" parent="1" name="root">
       <Host>localhost</Host>
       <ObjectGrants>SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,RELOAD,SHUTDOWN,PROCESS,FILE,REFERENCES,INDEX,ALTER,SHOW DATABASES,SUPER,CREATE TEMPORARY TABLES,LOCK TABLES,EXECUTE,REPLICATION SLAVE,REPLICATION CLIENT,CREATE VIEW,SHOW VIEW,CREATE ROUTINE,ALTER ROUTINE,CREATE USER,EVENT,TRIGGER,CREATE TABLESPACE,CREATE ROLE,DROP ROLE!
+ALL PRIVILEGES|board_games
 </ObjectGrants>
     </user>
-    <table id="287" parent="2" name="gamecategories">
-      <Comment>Returns a list of all the categories that a game could have. </Comment>
-    </table>
-    <table id="288" parent="2" name="gamemechanics">
-      <Comment>Returns a list of all the mechanics that a game could have.</Comment>
-    </table>
-    <table id="289" parent="2" name="games">
-      <Comment>Game Objects represent individual board games that exist. </Comment>
-    </table>
+    <table id="287" parent="2" name="gamecategories"/>
+    <table id="288" parent="2" name="gamemechanics"/>
+    <table id="289" parent="2" name="games"/>
     <column id="290" parent="287" name="idCategories">
       <Position>1</Position>
-      <DataType>varchar(15)|0s</DataType>
+      <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
     <column id="291" parent="287" name="name">
       <Position>2</Position>
-      <DataType>varchar(45)|0s</DataType>
-      <NotNull>1</NotNull>
+      <DataType>varchar(255)|0s</DataType>
     </column>
-    <index id="292" parent="287" name="idCategories_UNIQUE">
-      <ColNames>idCategories</ColNames>
-      <Unique>1</Unique>
-      <Type>btree</Type>
-    </index>
-    <key id="293" parent="287" name="PRIMARY">
+    <key id="292" parent="287" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>idCategories</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="294" parent="287" name="idCategories_UNIQUE">
-      <ColNames>idCategories</ColNames>
-      <UnderlyingIndexName>idCategories_UNIQUE</UnderlyingIndexName>
-    </key>
-    <column id="295" parent="288" name="idMechanics">
+    <column id="293" parent="288" name="idMechanics">
       <Position>1</Position>
-      <DataType>varchar(15)|0s</DataType>
+      <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="296" parent="288" name="name">
+    <column id="294" parent="288" name="name">
       <Position>2</Position>
-      <DataType>varchar(50)|0s</DataType>
-      <NotNull>1</NotNull>
+      <DataType>varchar(255)|0s</DataType>
     </column>
-    <index id="297" parent="288" name="idMechanics_UNIQUE">
-      <ColNames>idMechanics</ColNames>
-      <Unique>1</Unique>
-      <Type>btree</Type>
-    </index>
-    <key id="298" parent="288" name="PRIMARY">
+    <key id="295" parent="288" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>idMechanics</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="299" parent="288" name="idMechanics_UNIQUE">
-      <ColNames>idMechanics</ColNames>
-      <UnderlyingIndexName>idMechanics_UNIQUE</UnderlyingIndexName>
-    </key>
-    <column id="300" parent="289" name="id">
+    <column id="296" parent="289" name="id">
       <Position>1</Position>
       <DataType>varchar(15)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="301" parent="289" name="name">
+    <column id="297" parent="289" name="description_preview">
       <Position>2</Position>
-      <DataType>varchar(45)|0s</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <column id="302" parent="289" name="year_published">
-      <Position>3</Position>
-      <DataType>int unsigned|0s</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <column id="303" parent="289" name="min_players">
-      <Position>4</Position>
-      <DataType>int unsigned|0s</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <column id="304" parent="289" name="max_players">
-      <Position>5</Position>
-      <DataType>int unsigned|0s</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <column id="305" parent="289" name="min_playtime">
-      <Position>6</Position>
-      <DataType>int unsigned|0s</DataType>
-    </column>
-    <column id="306" parent="289" name="max_playtime">
-      <Position>7</Position>
-      <DataType>int unsigned|0s</DataType>
-    </column>
-    <column id="307" parent="289" name="min_age">
-      <Position>8</Position>
-      <DataType>int unsigned|0s</DataType>
-    </column>
-    <column id="308" parent="289" name="description_preview">
-      <Position>9</Position>
       <DataType>mediumtext|0s</DataType>
     </column>
-    <column id="309" parent="289" name="thumb_url">
+    <column id="298" parent="289" name="discount">
+      <Position>3</Position>
+      <DataType>float|0s</DataType>
+    </column>
+    <column id="299" parent="289" name="image_url">
+      <Position>4</Position>
+      <DataType>varchar(255)|0s</DataType>
+    </column>
+    <column id="300" parent="289" name="max_players">
+      <Position>5</Position>
+      <DataType>int|0s</DataType>
+    </column>
+    <column id="301" parent="289" name="max_playtime">
+      <Position>6</Position>
+      <DataType>int|0s</DataType>
+    </column>
+    <column id="302" parent="289" name="min_age">
+      <Position>7</Position>
+      <DataType>int|0s</DataType>
+    </column>
+    <column id="303" parent="289" name="min_players">
+      <Position>8</Position>
+      <DataType>int|0s</DataType>
+    </column>
+    <column id="304" parent="289" name="min_playtime">
+      <Position>9</Position>
+      <DataType>int|0s</DataType>
+    </column>
+    <column id="305" parent="289" name="name">
       <Position>10</Position>
-      <DataType>varchar(150)|0s</DataType>
+      <DataType>varchar(255)|0s</DataType>
     </column>
-    <column id="310" parent="289" name="image_url">
+    <column id="306" parent="289" name="price">
       <Position>11</Position>
-      <DataType>varchar(150)|0s</DataType>
+      <DataType>float|0s</DataType>
     </column>
-    <column id="311" parent="289" name="price">
+    <column id="307" parent="289" name="thumb_url">
       <Position>12</Position>
-      <DataType>float|0s</DataType>
-      <NotNull>1</NotNull>
+      <DataType>varchar(255)|0s</DataType>
     </column>
-    <column id="312" parent="289" name="discount">
+    <column id="308" parent="289" name="year_published">
       <Position>13</Position>
-      <DataType>float|0s</DataType>
-      <NotNull>1</NotNull>
+      <DataType>int|0s</DataType>
     </column>
-    <column id="313" parent="289" name="primary_publisher">
-      <Position>14</Position>
-      <DataType>varchar(100)|0s</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <index id="314" parent="289" name="id_UNIQUE">
-      <ColNames>id</ColNames>
-      <Unique>1</Unique>
-      <Type>btree</Type>
-    </index>
-    <key id="315" parent="289" name="PRIMARY">
+    <key id="309" parent="289" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
-    </key>
-    <key id="316" parent="289" name="id_UNIQUE">
-      <ColNames>id</ColNames>
-      <UnderlyingIndexName>id_UNIQUE</UnderlyingIndexName>
     </key>
   </database-model>
 </dataSource>

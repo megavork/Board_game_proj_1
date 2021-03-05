@@ -1,5 +1,7 @@
 package util;
 
+import entity.Category;
+import entity.Game;
 import entity.Mechanic;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -21,6 +23,8 @@ public class HibernateConfig {
         try {
             Configuration configuration = new Configuration();
             configuration.addAnnotatedClass(Mechanic.class);
+            configuration.addAnnotatedClass(Category.class);
+            configuration.addAnnotatedClass(Game.class);
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
             sessionFactory = configuration.buildSessionFactory(serviceRegistry);
         } catch (Throwable e) {

@@ -1,5 +1,7 @@
 package com.example.Board_game_proj_1;
 
+import dao.CategoryDao;
+import dao.GameDao;
 import dao.MechanicsDao;
 import java.io.*;
 import javax.servlet.ServletException;
@@ -22,9 +24,18 @@ public class HelloServlet extends HttpServlet {
         out.println("<html><body>");
         out.println("<h1>" + message + "</h1>");
         out.println("</body></html>");
-
+/*
         MechanicsDao mechDao = new MechanicsDao();
         mechDao.uploadFromAPI();
+
+ */
+        /*
+        CategoryDao categoryDao = new CategoryDao();
+        categoryDao.uploadFromAPI();
+
+         */
+        GameDao gameDao = new GameDao();
+        gameDao.uploadFromAPI();
 
         //getServletContext().getRequestDispatcher("/jsp/index.jsp").forward(request,response);
     }

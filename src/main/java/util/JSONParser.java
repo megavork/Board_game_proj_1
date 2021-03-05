@@ -8,9 +8,9 @@ import java.io.IOException;
 public class JSONParser {
 
 
-    public static JSONArray JSONParseMechanics(String jsonMechanics) throws IOException {
+    public static JSONArray JSONParser(String jsonMechanics, String objectName) throws IOException {
         JSONObject jsonObject = new JSONObject(jsonMechanics);
-        JSONArray array =  jsonObject.getJSONArray("mechanics");
+        JSONArray array =  jsonObject.getJSONArray(objectName);
 
         return array;
     }
