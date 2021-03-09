@@ -1,16 +1,14 @@
 package entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(schema = "board_game_sch", name = "games" )
 public class Game {
     @Id
-    @Column(name = "id")
-    String id;
+    @Column(name = "idGame", length = 15)
+    String idGame;
     @Column(name = "name")
     String name;
     @Column(name = "year_published")
@@ -25,7 +23,7 @@ public class Game {
     int max_playtime;
     @Column(name = "min_age")
     int min_age;
-    @Column(name = "description_preview")
+    @Column(name = "description_preview", length = 2500)
     String description_preview;
     @Column(name = "thumb_url")
     String thumb_url;
@@ -36,15 +34,29 @@ public class Game {
     @Column(name = "discount")
     float discount;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable (name="dependency_game_mech",
+            joinColumns=@JoinColumn (name="idGame"),
+            inverseJoinColumns=@JoinColumn(name="idMechanic"))
+    private List<Mechanic> mechanicsTable;
+
+    public List<Mechanic> getMechanics() {
+        return mechanicsTable;
+    }
+
+    public void setMechanics(List<Mechanic> mechanicsTable) {
+        this.mechanicsTable = mechanicsTable;
+    }
+
     public Game() {
     }
 
-    public String getId() {
-        return id;
+    public String getIdGame() {
+        return idGame;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setIdGame(String id) {
+        this.idGame = id;
     }
 
     public String getName() {

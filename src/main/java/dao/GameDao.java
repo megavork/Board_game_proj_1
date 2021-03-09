@@ -23,7 +23,7 @@ public class GameDao {
      * @param id
      * @return
      */
-    public Game findById(int id) {
+    public Game findById(String id) {
         return HibernateConfig.getSessionFactory().openSession().get(Game.class, id);
     }
 
@@ -84,8 +84,10 @@ public class GameDao {
             for(int i=0; i<jsonArray.length(); i++) {
                 JSONObject object = jsonArray.getJSONObject(i);
 
+                String idGame = (String) object.get("id");
+
                 Game game = new Game();
-                game.setId((String) object.get("id"));
+                game.setIdGame(idGame);
                 game.setName((String) object.get("name"));
                 game.setYear_published((int) object.get("year_published"));
                 game.setMin_players((int) object.get("min_players"));
@@ -100,12 +102,12 @@ public class GameDao {
                 game.setDiscount(Float.parseFloat((String) object.get("discount")));
 
                 System.out.println("Try to add data in DataBase");
-
                 Transaction tx = session.beginTransaction();
                 session.save(game);
                 tx.commit();
-
                 System.out.println("Data was added.");
+
+
             }
             session.close();
         } catch (Exception e) {
@@ -113,4 +115,5 @@ public class GameDao {
             e.printStackTrace();
         }
     }
+
 }

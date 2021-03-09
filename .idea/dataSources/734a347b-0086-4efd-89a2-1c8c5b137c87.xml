@@ -921,93 +921,124 @@ SELECT|sys.sys_config
 ALL PRIVILEGES|board_games
 </ObjectGrants>
     </user>
-    <table id="287" parent="2" name="gamecategories"/>
-    <table id="288" parent="2" name="gamemechanics"/>
+    <table id="287" parent="2" name="categories"/>
+    <table id="288" parent="2" name="dependency_game_mech"/>
     <table id="289" parent="2" name="games"/>
-    <column id="290" parent="287" name="idCategories">
+    <table id="290" parent="2" name="mechanics"/>
+    <column id="291" parent="287" name="idCategories">
       <Position>1</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="291" parent="287" name="name">
+    <column id="292" parent="287" name="name">
       <Position>2</Position>
       <DataType>varchar(255)|0s</DataType>
     </column>
-    <key id="292" parent="287" name="PRIMARY">
+    <key id="293" parent="287" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>idCategories</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="293" parent="288" name="idMechanics">
-      <Position>1</Position>
-      <DataType>varchar(255)|0s</DataType>
-      <NotNull>1</NotNull>
-    </column>
-    <column id="294" parent="288" name="name">
-      <Position>2</Position>
-      <DataType>varchar(255)|0s</DataType>
-    </column>
-    <key id="295" parent="288" name="PRIMARY">
-      <NameSurrogate>1</NameSurrogate>
-      <ColNames>idMechanics</ColNames>
-      <Primary>1</Primary>
-    </key>
-    <column id="296" parent="289" name="id">
+    <column id="294" parent="288" name="idMechanic">
       <Position>1</Position>
       <DataType>varchar(15)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="297" parent="289" name="description_preview">
+    <column id="295" parent="288" name="idGame">
       <Position>2</Position>
-      <DataType>mediumtext|0s</DataType>
+      <DataType>varchar(15)|0s</DataType>
+      <NotNull>1</NotNull>
     </column>
-    <column id="298" parent="289" name="discount">
+    <index id="296" parent="288" name="FKtrnusbn0o8miyfsijskr8ghfa">
+      <ColNames>idGame</ColNames>
+      <Type>btree</Type>
+    </index>
+    <key id="297" parent="288" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>idMechanic
+idGame</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="298" parent="288" name="FK1tju4xk1wj336j4kni3csqsu6">
+      <ColNames>idMechanic</ColNames>
+      <RefTableName>mechanics</RefTableName>
+      <RefColNames>idMechanics</RefColNames>
+    </foreign-key>
+    <foreign-key id="299" parent="288" name="FKtrnusbn0o8miyfsijskr8ghfa">
+      <ColNames>idGame</ColNames>
+      <RefTableName>games</RefTableName>
+      <RefColNames>idGame</RefColNames>
+    </foreign-key>
+    <column id="300" parent="289" name="idGame">
+      <Position>1</Position>
+      <DataType>varchar(15)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="301" parent="289" name="description_preview">
+      <Position>2</Position>
+      <DataType>varchar(2500)|0s</DataType>
+    </column>
+    <column id="302" parent="289" name="discount">
       <Position>3</Position>
       <DataType>float|0s</DataType>
     </column>
-    <column id="299" parent="289" name="image_url">
+    <column id="303" parent="289" name="image_url">
       <Position>4</Position>
       <DataType>varchar(255)|0s</DataType>
     </column>
-    <column id="300" parent="289" name="max_players">
+    <column id="304" parent="289" name="max_players">
       <Position>5</Position>
       <DataType>int|0s</DataType>
     </column>
-    <column id="301" parent="289" name="max_playtime">
+    <column id="305" parent="289" name="max_playtime">
       <Position>6</Position>
       <DataType>int|0s</DataType>
     </column>
-    <column id="302" parent="289" name="min_age">
+    <column id="306" parent="289" name="min_age">
       <Position>7</Position>
       <DataType>int|0s</DataType>
     </column>
-    <column id="303" parent="289" name="min_players">
+    <column id="307" parent="289" name="min_players">
       <Position>8</Position>
       <DataType>int|0s</DataType>
     </column>
-    <column id="304" parent="289" name="min_playtime">
+    <column id="308" parent="289" name="min_playtime">
       <Position>9</Position>
       <DataType>int|0s</DataType>
     </column>
-    <column id="305" parent="289" name="name">
+    <column id="309" parent="289" name="name">
       <Position>10</Position>
       <DataType>varchar(255)|0s</DataType>
     </column>
-    <column id="306" parent="289" name="price">
+    <column id="310" parent="289" name="price">
       <Position>11</Position>
       <DataType>float|0s</DataType>
     </column>
-    <column id="307" parent="289" name="thumb_url">
+    <column id="311" parent="289" name="thumb_url">
       <Position>12</Position>
       <DataType>varchar(255)|0s</DataType>
     </column>
-    <column id="308" parent="289" name="year_published">
+    <column id="312" parent="289" name="year_published">
       <Position>13</Position>
       <DataType>int|0s</DataType>
     </column>
-    <key id="309" parent="289" name="PRIMARY">
+    <key id="313" parent="289" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
-      <ColNames>id</ColNames>
+      <ColNames>idGame</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="314" parent="290" name="idMechanics">
+      <Position>1</Position>
+      <DataType>varchar(255)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="315" parent="290" name="name">
+      <Position>2</Position>
+      <DataType>varchar(255)|0s</DataType>
+    </column>
+    <key id="316" parent="290" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>idMechanics</ColNames>
       <Primary>1</Primary>
     </key>
   </database-model>

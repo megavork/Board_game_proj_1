@@ -1,8 +1,6 @@
 package com.example.Board_game_proj_1;
 
-import dao.CategoryDao;
-import dao.GameDao;
-import dao.MechanicsDao;
+import dao.DependMechDao;
 import java.io.*;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
@@ -34,8 +32,8 @@ public class HelloServlet extends HttpServlet {
         categoryDao.uploadFromAPI();
 
          */
-        GameDao gameDao = new GameDao();
-        gameDao.uploadFromAPI();
+        DependMechDao dependMechDao = new DependMechDao();
+        dependMechDao.uploadFromAPI();
 
         //getServletContext().getRequestDispatcher("/jsp/index.jsp").forward(request,response);
     }

@@ -2,6 +2,7 @@ package util;
 
 import entity.Category;
 import entity.Game;
+import entity.GameMechanicDependency;
 import entity.Mechanic;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -15,7 +16,7 @@ public class HibernateConfig {
     }
 
     /**
-     * Procedure session create
+     * Return new session to work by using hibernate
      * @return org.hibernate.Session
      */
     public static SessionFactory getSessionFactory() {
@@ -23,6 +24,7 @@ public class HibernateConfig {
         try {
             Configuration configuration = new Configuration();
             configuration.addAnnotatedClass(Mechanic.class);
+            configuration.addAnnotatedClass(GameMechanicDependency.class);
             configuration.addAnnotatedClass(Category.class);
             configuration.addAnnotatedClass(Game.class);
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();

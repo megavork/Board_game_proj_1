@@ -25,7 +25,7 @@ public class MechanicsDao {
      * @param id
      * @return
      */
-    public Mechanic findById(int id) {
+    public static Mechanic findById(String id) {
         return HibernateConfig.getSessionFactory().openSession().get(Mechanic.class, id);
     }
 

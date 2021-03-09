@@ -1,16 +1,25 @@
 package entity;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
-@Table(schema = "board_game_sch", name = "gamemechanics" )
+@Table(schema = "board_game_sch", name = "mechanics" )
 public class Mechanic {
     @Id
     @Column(name = "idMechanics")
     private String idMechanics;
     @Column(name = "name")
     private String name;
+/*
+    @ManyToMany
+    @JoinTable (name="dependency_game_mech",
+            joinColumns=@JoinColumn (name="idMechanic"),
+            inverseJoinColumns=@JoinColumn(name="idGame"))
 
+ */
+    @ManyToMany(mappedBy = "mechanicsTable", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Game> games;
 
     public String getIdMechanics() {
         return idMechanics;

@@ -6,7 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(schema = "board_game_sch", name = "gamecategories" )
+@Table(schema = "board_game_sch", name = "categories" )
 public class Category {
     @Id
     @Column(name = "idCategories")
