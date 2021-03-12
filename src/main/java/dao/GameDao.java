@@ -22,7 +22,7 @@ public class GameDao {
     final private String objectName = "games";
 
     /**
-     * Return one category from base
+     * Return one Game from base
      * @param id
      * @return
      */
@@ -43,7 +43,7 @@ public class GameDao {
     }
 
     /**
-     * Update one category in base
+     * Update one Game in base
      * @param game
      */
     public void update(Game game) {
@@ -55,7 +55,7 @@ public class GameDao {
     }
 
     /**
-     * Delete one category from base
+     * Delete one Game from base
      * @param game
      */
     public void delete(Game game) {
@@ -67,10 +67,10 @@ public class GameDao {
     }
 
     /**
-     * Delete one category from base by using Id
+     * Delete one Game from base by using Id
      * @param id
      */
-    public void delete(String id) {
+    public void deleteById(String id) {
         Session session = HibernateConfig.getSessionFactory().openSession();
         Game game = session.get(Game.class, id);
         Transaction tx1 = session.beginTransaction();
@@ -80,7 +80,7 @@ public class GameDao {
     }
 
     /**
-     * Return all objects from base
+     * Return all Games from base
      * @return
      */
     public List<Game> findAll() {
@@ -89,7 +89,7 @@ public class GameDao {
     }
 
     /**
-     * MEthod will return all mechanics which depends on idGame
+     * Method will return all mechanics which depends on idGame
      * @param idGame
      * @return
      */
@@ -98,6 +98,11 @@ public class GameDao {
         return game.getMechanicsTable();
     }
 
+    /**
+     * Method will return all categories which depends on idGame
+     * @param idGame
+     * @return
+     */
     public List<Category> getGameCategoriesById(String idGame) {
         Game game = findById(idGame);
         return game.getCategoryTable();
@@ -128,7 +133,7 @@ public class GameDao {
                 game.setMin_age((int) object.get("min_age"));
 
                 String description_preview = (String) object.get("description_preview");
-                game.setPreviewDescription(removeBlanks(description_preview));
+                game.setDescription_preview(removeBlanks(description_preview));
 
                 game.setThumb_url((String) object.get("thumb_url"));
                 game.setImage_url((String) object.get("image_url"));
@@ -147,7 +152,6 @@ public class GameDao {
                 tx.commit();
                 System.out.println("Data was added.");
             }
-            session.close();
             return true;
         } catch (Exception e) {
             System.out.println(e.getMessage());

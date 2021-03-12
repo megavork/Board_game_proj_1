@@ -78,7 +78,7 @@ public class CategoryDao {
     /**
      * Method will load data from API and put it in base
      */
-    public void uploadFromAPI() {
+    public boolean uploadFromAPI() {
         Session session = HibernateConfig.getSessionFactory().openSession();
 
         try {
@@ -96,9 +96,11 @@ public class CategoryDao {
 
                 System.out.println("Data was added.");
             }
+            return true;
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
+            return false;
         } finally {
             session.close();
         }

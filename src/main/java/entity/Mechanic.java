@@ -1,10 +1,14 @@
 package entity;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@Data
 @Table(schema = "board_game_sch", name = "mechanics_game" )
+@NoArgsConstructor
 public class Mechanic {
     @Id
     @Column(name = "idMechanics", length = 15)
@@ -17,25 +21,6 @@ public class Mechanic {
             joinColumns=@JoinColumn (name="idMechanicForGame"),
             inverseJoinColumns=@JoinColumn(name="idGamesForMech"))
     private List<Game> games;
-
-    public String getIdMechanics() {
-        return idMechanics;
-    }
-
-    public void setIdMechanics(String id) {
-        this.idMechanics = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Mechanic() {
-    }
 
     public Mechanic(String idMechanics, String name) {
         this.idMechanics = idMechanics;

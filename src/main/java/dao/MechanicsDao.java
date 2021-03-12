@@ -80,7 +80,7 @@ public class MechanicsDao {
     /**
      * Method will load data from API and put it in base
      */
-    public void uploadFromAPI() {
+    public boolean uploadFromAPI() {
         Session session = HibernateConfig.getSessionFactory().openSession();
 
         try {
@@ -98,10 +98,13 @@ public class MechanicsDao {
 
                 System.out.println("Записи добавлены");
             }
-            session.close();
+            return true;
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
+            return false;
+        } finally {
+            session.close();
         }
     }
 }

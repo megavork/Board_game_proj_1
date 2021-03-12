@@ -1,15 +1,16 @@
 package entity;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
-
 import javax.persistence.*;
 import java.util.List;
 
 @Data
 @Entity
 @Table(schema = "board_game_sch", name = "categories_game")
+@NoArgsConstructor
 public class Category {
     @Id
     @Column(name = "idCategories", length = 15)
@@ -24,9 +25,6 @@ public class Category {
             joinColumns=@JoinColumn (name="idCategoryForGame"),
             inverseJoinColumns=@JoinColumn(name="idGamesForCateg"))
     private List<Game> gameList;
-
-    public Category() {
-    }
 
     public Category(String id, String name) {
         this.idCategories = id;
