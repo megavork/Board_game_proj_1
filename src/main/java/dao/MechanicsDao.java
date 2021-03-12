@@ -26,7 +26,10 @@ public class MechanicsDao {
      * @return
      */
     public static Mechanic findById(String id) {
-        return HibernateConfig.getSessionFactory().openSession().get(Mechanic.class, id);
+        Session session = HibernateConfig.getSessionFactory().openSession();
+        Mechanic mechanic = session.get(Mechanic.class, id);
+        session.close();
+        return mechanic;
     }
 
     /**
@@ -93,7 +96,7 @@ public class MechanicsDao {
                 session.save(mechanic);
                 tx.commit();
 
-                System.out.println("\tЗаписи добавлены");
+                System.out.println("Записи добавлены");
             }
             session.close();
         } catch (Exception e) {

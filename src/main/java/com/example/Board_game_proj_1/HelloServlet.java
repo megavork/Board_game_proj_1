@@ -1,6 +1,5 @@
 package com.example.Board_game_proj_1;
 
-import dao.DependMechDao;
 import java.io.*;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
@@ -22,20 +21,10 @@ public class HelloServlet extends HttpServlet {
         out.println("<html><body>");
         out.println("<h1>" + message + "</h1>");
         out.println("</body></html>");
-/*
-        MechanicsDao mechDao = new MechanicsDao();
-        mechDao.uploadFromAPI();
-
- */
-        /*
-        CategoryDao categoryDao = new CategoryDao();
-        categoryDao.uploadFromAPI();
-
-         */
-        DependMechDao dependMechDao = new DependMechDao();
-        dependMechDao.uploadFromAPI();
 
         //getServletContext().getRequestDispatcher("/jsp/index.jsp").forward(request,response);
+        getServletContext().getRequestDispatcher("/jsp/reg_page.jsp").forward(request,response);
+
     }
 
     public void destroy() {

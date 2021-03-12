@@ -1,10 +1,17 @@
 package entity;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(schema = "board_game_sch", name = "games" )
+@Data
+@Table(schema = "board_game_sch", name = "game_objects" )
+@NoArgsConstructor
 public class Game {
     @Id
     @Column(name = "idGame", length = 15)
@@ -23,7 +30,7 @@ public class Game {
     int max_playtime;
     @Column(name = "min_age")
     int min_age;
-    @Column(name = "description_preview", length = 2500)
+    @Column(name = "description_preview", length = 3000)
     String description_preview;
     @Column(name = "thumb_url")
     String thumb_url;
@@ -34,22 +41,20 @@ public class Game {
     @Column(name = "discount")
     float discount;
 
+
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable (name="dependency_game_mech",
-            joinColumns=@JoinColumn (name="idGame"),
-            inverseJoinColumns=@JoinColumn(name="idMechanic"))
+    @Fetch(value = FetchMode.SUBSELECT)
+    @JoinTable (name="depend_game_mech",
+            joinColumns=@JoinColumn (name="idGamesForMech"),
+            inverseJoinColumns=@JoinColumn(name="idMechanicForGame"))
     private List<Mechanic> mechanicsTable;
 
-    public List<Mechanic> getMechanics() {
-        return mechanicsTable;
-    }
-
-    public void setMechanics(List<Mechanic> mechanicsTable) {
-        this.mechanicsTable = mechanicsTable;
-    }
-
-    public Game() {
-    }
+    @ManyToMany(fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
+    @JoinTable (name="depend_game_category",
+            joinColumns=@JoinColumn (name="idGamesForCateg"),
+            inverseJoinColumns=@JoinColumn(name="idCategoryForGame"))
+    private List<Category> categoryTable;
 
     public String getIdGame() {
         return idGame;

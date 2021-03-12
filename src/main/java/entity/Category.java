@@ -1,34 +1,29 @@
 package entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import lombok.Data;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
+import javax.persistence.*;
+import java.util.List;
+
+@Data
 @Entity
-@Table(schema = "board_game_sch", name = "categories" )
+@Table(schema = "board_game_sch", name = "categories_game")
 public class Category {
     @Id
-    @Column(name = "idCategories")
+    @Column(name = "idCategories", length = 15)
     String idCategories;
+
     @Column(name = "name")
     String name;
 
-    public String getId() {
-        return idCategories;
-    }
-
-    public void setId(String id) {
-        this.idCategories = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+    @ManyToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JoinTable (name="depend_game_category",
+            joinColumns=@JoinColumn (name="idCategoryForGame"),
+            inverseJoinColumns=@JoinColumn(name="idGamesForCateg"))
+    private List<Game> gameList;
 
     public Category() {
     }

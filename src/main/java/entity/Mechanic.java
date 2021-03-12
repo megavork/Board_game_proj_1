@@ -4,21 +4,18 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(schema = "board_game_sch", name = "mechanics" )
+@Table(schema = "board_game_sch", name = "mechanics_game" )
 public class Mechanic {
     @Id
-    @Column(name = "idMechanics")
+    @Column(name = "idMechanics", length = 15)
     private String idMechanics;
     @Column(name = "name")
     private String name;
-/*
-    @ManyToMany
-    @JoinTable (name="dependency_game_mech",
-            joinColumns=@JoinColumn (name="idMechanic"),
-            inverseJoinColumns=@JoinColumn(name="idGame"))
 
- */
-    @ManyToMany(mappedBy = "mechanicsTable", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany
+    @JoinTable (name="depend_game_mech",
+            joinColumns=@JoinColumn (name="idMechanicForGame"),
+            inverseJoinColumns=@JoinColumn(name="idGamesForMech"))
     private List<Game> games;
 
     public String getIdMechanics() {

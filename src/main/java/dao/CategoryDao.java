@@ -23,8 +23,11 @@ public class CategoryDao {
      * @param id
      * @return
      */
-    public Category findById(int id) {
-        return HibernateConfig.getSessionFactory().openSession().get(Category.class, id);
+    public static Category findById(String id) {
+        Session session = HibernateConfig.getSessionFactory().openSession();
+        Category category = session.get(Category.class, id);
+        session.close();
+        return category;
     }
 
     /**
@@ -93,10 +96,11 @@ public class CategoryDao {
 
                 System.out.println("Data was added.");
             }
-            session.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
+        } finally {
+            session.close();
         }
     }
 }
