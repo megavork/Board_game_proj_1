@@ -1,11 +1,9 @@
 package dao;
 
-import entity.Category;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
+import services.GameService;
 
 
 public class GameDaoCheckable {
@@ -13,17 +11,17 @@ public class GameDaoCheckable {
     @Test
     @Ignore
     public void uploadCheckable() {
-        GameDao gameDao = new GameDao();
-        Assert.assertTrue(gameDao.uploadFromAPI());
+        GameService gameService = new GameService();
+        Assert.assertTrue(gameService.uploadFromAPI());
     }
     @Test
     public void getGameMechanicsById() {
-        GameDao gameDao = new GameDao();
-        Assert.assertNotNull(gameDao.getGameMechanicsById("8xos44jY7Q"));
+        GameService gameService = new GameService();
+        Assert.assertNotNull(gameService.getGameMechanicsById("8xos44jY7Q"));
     }
     @Test
     public void getGameCategoriesById() {
-        GameDao gameDao = new GameDao();
-        Assert.assertNotNull(gameDao.getGameCategoriesById("8xos44jY7Q"));
+        GameService gameService = new GameService();
+        Assert.assertNotNull(gameService.getGameCategoriesById("8xos44jY7Q"));
     }
 }
