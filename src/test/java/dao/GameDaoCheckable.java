@@ -5,7 +5,6 @@ import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 import services.GameService;
 
-
 public class GameDaoCheckable {
 
     @Test

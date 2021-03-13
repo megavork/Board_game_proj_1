@@ -28,6 +28,7 @@ public class HibernateConfig {
             configuration.addAnnotatedClass(Mechanic.class);
             configuration.addAnnotatedClass(Category.class);
             configuration.addAnnotatedClass(Game.class);
+            configuration.addAnnotatedClass(User.class);
 
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
             sessionFactory = configuration.buildSessionFactory(serviceRegistry);

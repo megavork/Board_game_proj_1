@@ -23,7 +23,7 @@ public class GameService {
     }
 
     /**
-     * Save Object in category base
+     * Save Object in Game base
      * @param game
      */
     public void saveGame(Game game) {
