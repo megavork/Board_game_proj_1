@@ -2,4 +2,8 @@ Manifest-Version: 1.0
 Created-By: IntelliJ IDEA
 Built-By: Denis Belski
 Build-Jdk: 15.0.1
+Implementation-Title: Board_game_proj_1
+Implementation-Version: 1.0-SNAPSHOT
+Implementation-Vendor-Id: com.example
+Main-Class: ${start-class}
 
