@@ -1,9 +1,9 @@
 package dao;
 
+import com.example.Board_game_proj_1.services.GameService;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
-import services.GameService;
 
 public class GameDaoCheckable {
 

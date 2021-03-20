@@ -1,15 +1,15 @@
 package dao;
 
-import entity.User;
+import com.example.Board_game_proj_1.entity.User;
+import com.example.Board_game_proj_1.services.UserServiceImpl;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
-import services.UserService;
 
 public class UserServiceTest {
-    UserService userService = new UserService();
+    UserServiceImpl userService = new UserServiceImpl();
 
     @Test
     public void saveUSer() {
-        Assert.assertFalse(userService.saveUser(new User(0,"Megavork","password","megavork@mail.ru")));
+        Assert.assertFalse(userService.save(new User(0,"Megavork","password","megavork@mail.ru")));
     }
 }
