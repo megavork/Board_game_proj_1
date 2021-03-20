@@ -3,7 +3,7 @@ package com.example.Board_game_proj_1.dao.intf;
 import com.example.Board_game_proj_1.entity.User;
 
 import java.util.List;
-//asdfsdvwdv
+
 public interface UserDao {
 
     User findById(int id);
