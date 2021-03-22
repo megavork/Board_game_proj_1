@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface UserDao {
 
-    User findById(int id);
-    boolean save(User user);
+    User findByLogin(String login);
+    User save(User user);
     boolean update(User user);
     boolean delete(User user);
     List<User> findAllUsers();

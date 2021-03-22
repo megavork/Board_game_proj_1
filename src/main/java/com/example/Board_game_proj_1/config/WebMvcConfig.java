@@ -19,4 +19,5 @@ public class WebMvcConfig {
         viewResolver.setSuffix(".jsp");
         return viewResolver;
     }
+
 }

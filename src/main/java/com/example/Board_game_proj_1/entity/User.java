@@ -17,13 +17,12 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class User implements Serializable {
+
     @Id
-    @Column(name = "idUsers")
-    int idUsers;
-    @Column(name = "user_role")
-    int user_role;
     @Column(name = "login", length = 45)
     String login;
+    @Column(name = "user_role")
+    int user_role;
     @Column(name = "password", length = 45)
     String password;
     @Column(name = "email")

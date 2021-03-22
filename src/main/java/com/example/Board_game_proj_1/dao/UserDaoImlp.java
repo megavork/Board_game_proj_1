@@ -14,13 +14,13 @@ public class UserDaoImlp implements UserDao {
 
     /**
      * Return one category from base
-     * @param id
+     * @param login
      * @return
      */
     @Override
-    public User findById(int id) {
+    public User findByLogin(String login) {
         Session session = HibernateConfig.getSessionFactory().openSession();
-        User user = session.get(User.class, id);
+        User user = session.get(User.class, login);
         session.close();
         return user;
     }
@@ -30,17 +30,17 @@ public class UserDaoImlp implements UserDao {
      * @param user
      * @return
      */
-    public boolean save(User user) {
+    public User save(User user) {
         Session session = HibernateConfig.getSessionFactory().openSession();
         Transaction tx1 = null;
         try {
             tx1 = session.beginTransaction();
             session.save(user);
             tx1.commit();
-            return true;
+            return findByLogin(user.getLogin());
         } catch (RuntimeException e) {
             if (tx1 != null) tx1.rollback();
-            return false;
+            return null;
         } finally {
             session.close();
         }

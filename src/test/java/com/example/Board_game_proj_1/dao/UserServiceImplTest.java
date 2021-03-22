@@ -13,7 +13,7 @@ public class UserServiceImplTest {
 
     @Test
     public void saveUSer() {
-        Assert.assertTrue(userServiceImpl.save(new User(0,"Sanya","LetsDoIt00-","megavork2@mail.ru")));
+        Assert.assertNotNull(userServiceImpl.save(new User(0,"Sanya","LetsDoIt00-","megavork2@mail.ru")));
     }
 
     @Test

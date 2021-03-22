@@ -17,13 +17,13 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * Return one User from base
-     * @param idUser
+     * Return User by using Login
+     * @param login
      * @return
      */
     @Override
-    public User findById(int idUser) {
-        return userDao.findById(idUser);
+    public User findByLogin(String login) {
+        return userDao.findByLogin(login);
     }
 
     /**
@@ -31,8 +31,9 @@ public class UserServiceImpl implements UserService {
      * @param user
      */
     @Override
-    public boolean save(User user) {
-        return userDao.save(user);
+    public User save(User user) {
+        userDao.save(user);
+        return userDao.findByLogin(user.getLogin());
     }
 
     /**
