@@ -1,19 +1,24 @@
-package com.example.Board_game_proj_1.dao;
+package com.example.Board_game_proj_1.dao.classes;
 
+import com.example.Board_game_proj_1.dao.interfaces.MechanicDao;
 import com.example.Board_game_proj_1.entity.Mechanic;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
+import org.hibernate.SessionFactory;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import com.example.Board_game_proj_1.util.HibernateConfig;
 import com.example.Board_game_proj_1.util.UploadObjectsFromAPI;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-/*
-    класс для работы с СУБД. все основные методы должны быть описаны здесь
- */
-public class MechanicsDao {
+
+@Repository
+public class MechanicDaoImpl implements MechanicDao {
+
+    @Autowired
+    private SessionFactory sessionFactory;
+
     /**
      * URL for get data from API
      */
@@ -25,10 +30,9 @@ public class MechanicsDao {
      * @param id
      * @return
      */
-    public static Mechanic findById(String id) {
-        Session session = HibernateConfig.getSessionFactory().openSession();
+    public Mechanic findById(String id) {
+        Session session = sessionFactory.getCurrentSession();
         Mechanic mechanic = session.get(Mechanic.class, id);
-        session.close();
         return mechanic;
     }
 
@@ -37,11 +41,8 @@ public class MechanicsDao {
      * @param mechanic
      */
     public void save(Mechanic mechanic) {
-        Session session = HibernateConfig.getSessionFactory().openSession();
-        Transaction tx1 = session.beginTransaction();
+        Session session = sessionFactory.getCurrentSession();
         session.save(mechanic);
-        tx1.commit();
-        session.close();
     }
 
     /**
@@ -49,11 +50,8 @@ public class MechanicsDao {
      * @param mechanic
      */
     public void update(Mechanic mechanic) {
-        Session session = HibernateConfig.getSessionFactory().openSession();
-        Transaction tx1 = session.beginTransaction();
+        Session session = sessionFactory.getCurrentSession();
         session.update(mechanic);
-        tx1.commit();
-        session.close();
     }
 
     /**
@@ -61,27 +59,24 @@ public class MechanicsDao {
      * @param mechanic
      */
     public void delete(Mechanic mechanic) {
-        Session session = HibernateConfig.getSessionFactory().openSession();
-        Transaction tx1 = session.beginTransaction();
+        Session session = sessionFactory.getCurrentSession();
         session.delete(mechanic);
-        tx1.commit();
-        session.close();
     }
 
     /**
      * Return all objects from base
      * @return
      */
-    public List<Mechanic> findAll() {
-        List<Mechanic> mechanics = (List<Mechanic>) HibernateConfig.getSessionFactory().openSession().createQuery("From Mechanic").list();
-        return mechanics;
+    public List findAll() {
+        Session session = sessionFactory.getCurrentSession();
+        return session.createQuery("From Mechanic").list();
     }
 
     /**
      * Method will load data from API and put it in base
      */
     public boolean uploadFromAPI() {
-        Session session = HibernateConfig.getSessionFactory().openSession();
+        Session session = sessionFactory.getCurrentSession();
 
         try {
             JSONArray jsonArray = UploadObjectsFromAPI.getDateFromAPI(URL,objectName);
@@ -90,12 +85,9 @@ public class MechanicsDao {
                 JSONObject object = jsonArray.getJSONObject(i);
 
                 Mechanic mechanic = new Mechanic((String) object.get("id"), (String) object.get("name"));
+
                 System.out.println("Try to add data in DataBase");
-
-                Transaction tx = session.beginTransaction();
                 session.save(mechanic);
-                tx.commit();
-
                 System.out.println("Записи добавлены");
             }
             return true;
@@ -103,8 +95,6 @@ public class MechanicsDao {
             System.out.println(e.getMessage());
             e.printStackTrace();
             return false;
-        } finally {
-            session.close();
         }
     }
 }

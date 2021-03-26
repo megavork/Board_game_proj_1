@@ -20,7 +20,7 @@
         <setting name="validation-enabled" value="true" />
         <setting name="provider-name" value="Hibernate" />
         <datasource-mapping>
-          <factory-entry name="Board_game_proj_1" value="734a347b-0086-4efd-89a2-1c8c5b137c87" />
+          <factory-entry name="Board_game_proj_1" value="759025ba-a168-4000-91c5-cc032d84d00b" />
           <factory-entry name="default" value="734a347b-0086-4efd-89a2-1c8c5b137c87" />
         </datasource-mapping>
         <naming-strategy-map />

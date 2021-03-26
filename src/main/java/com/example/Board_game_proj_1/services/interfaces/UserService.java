@@ -1,4 +1,4 @@
-package com.example.Board_game_proj_1.services.intf;
+package com.example.Board_game_proj_1.services.interfaces;
 
 import com.example.Board_game_proj_1.entity.User;
 

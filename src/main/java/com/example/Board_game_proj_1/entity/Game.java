@@ -1,11 +1,15 @@
 package com.example.Board_game_proj_1.entity;
 
+import com.example.Board_game_proj_1.dto.GameDto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -40,19 +44,57 @@ public class Game {
     float price;
     @Column(name = "discount")
     float discount;
-
+    @Column(name = "average_user_rating")
+    float average_user_rating;
+/*
+    @Transient
     @ManyToMany(fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
     @JoinTable (name="depend_game_mech",
             joinColumns=@JoinColumn (name="idGamesForMech"),
             inverseJoinColumns=@JoinColumn(name="idMechanicForGame"))
-    private List<Mechanic> mechanicsTable;
 
+ */
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JoinTable (name="depend_game_mech",
+            joinColumns=@JoinColumn (name="idGamesForMech"),
+            inverseJoinColumns=@JoinColumn(name="idMechanicForGame"))
+    private List<Mechanic> mechanicsTable = new ArrayList<>();
+/*
+    @Transient
     @ManyToMany(fetch = FetchType.EAGER)
     @Fetch(value = FetchMode.SUBSELECT)
     @JoinTable (name="depend_game_category",
             joinColumns=@JoinColumn (name="idGamesForCateg"),
             inverseJoinColumns=@JoinColumn(name="idCategoryForGame"))
+
+ */
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JoinTable (name="depend_game_category",
+        joinColumns=@JoinColumn (name="idGamesForCateg"),
+        inverseJoinColumns=@JoinColumn(name="idCategoryForGame"))
     private List<Category> categoryTable;
+
+    public GameDto fromGameToGameDto() {
+        GameDto gameDto = new GameDto();
+        gameDto.setIdGame(this.getIdGame());
+        gameDto.setName(this.getName());
+        gameDto.setYear_published(this.getYear_published());
+        gameDto.setMin_players(this.getMin_players());
+        gameDto.setMax_players(this.getMax_players());
+        gameDto.setMin_playtime(this.getMin_playtime());
+        gameDto.setMax_playtime(this.getMax_playtime());
+        gameDto.setMin_age(this.getMin_age());
+        gameDto.setDescription_preview(this.getDescription_preview());
+        gameDto.setThumb_url(this.getThumb_url());
+        gameDto.setImage_url(this.getImage_url());
+        gameDto.setPrice(this.getPrice());
+        gameDto.setDiscount(this.getDiscount());
+        gameDto.setAverage_user_rating(this.getAverage_user_rating());
+
+        return gameDto;
+    }
 
 }

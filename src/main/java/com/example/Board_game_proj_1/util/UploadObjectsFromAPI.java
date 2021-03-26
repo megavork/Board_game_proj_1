@@ -7,9 +7,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.stream.Collectors;
 
-public class UploadObjectsFromAPI {
+public class UploadObjectsFromAPI{
 
     /**
      * Will got all mechanics from API
@@ -24,10 +25,10 @@ public class UploadObjectsFromAPI {
 
         connection.setRequestMethod("GET");
 
-        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-        String inputLine;
+        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
 
         //read full JSON from API
+        String inputLine;
         inputLine = in.lines().collect(Collectors.joining());
         in.close();
 

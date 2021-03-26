@@ -1,20 +1,29 @@
-package com.example.Board_game_proj_1.services;
+package com.example.Board_game_proj_1.services.classes;
 
-import com.example.Board_game_proj_1.dao.CategoryDao;
+import com.example.Board_game_proj_1.dao.interfaces.CategoryDao;
 import com.example.Board_game_proj_1.entity.Category;
+import com.example.Board_game_proj_1.services.interfaces.CategoryService;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
+@Service
 @NoArgsConstructor
-public class CategoriesService {
-    private CategoryDao categoryDao = new CategoryDao();
+public class CategoryServiceImpl implements CategoryService {
+
+    @Autowired
+    CategoryDao categoryDao;
 
     /**
      * Return one Category from base
      * @param idCategory
      * @return
      */
+    @Override
+    @Transactional
     public Category findCategoryById(String idCategory) {
         return categoryDao.findById(idCategory);
     }
@@ -23,6 +32,8 @@ public class CategoriesService {
      * Save Object in category base
      * @param category
      */
+    @Override
+    @Transactional
     public void saveCategory(Category category) {
         categoryDao.save(category);
     }
@@ -31,6 +42,8 @@ public class CategoriesService {
      * Update one Category in base
      * @param category
      */
+    @Override
+    @Transactional
     public void updateCategory(Category category) {
         categoryDao.update(category);
     }
@@ -39,6 +52,8 @@ public class CategoriesService {
      * Delete one Category from base
      * @param category
      */
+    @Override
+    @Transactional
     public void deleteCategory(Category category) {
         categoryDao.delete(category);
     }
@@ -47,6 +62,8 @@ public class CategoriesService {
      * Return all Categories from base
      * @return
      */
+    @Override
+    @Transactional
     public List<Category> findAll() {
         return categoryDao.findAll();
     }
@@ -56,6 +73,8 @@ public class CategoriesService {
      * Won't work if base already has all data.
      * @return
      */
+    @Override
+    @Transactional
     public boolean uploadFromAPI() {
         return categoryDao.uploadFromAPI();
     }

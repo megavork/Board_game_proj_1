@@ -1,20 +1,21 @@
-package com.example.Board_game_proj_1.services;
+package com.example.Board_game_proj_1.services.classes;
 
-import com.example.Board_game_proj_1.dao.intf.UserDao;
+import com.example.Board_game_proj_1.dao.interfaces.UserDao;
 import com.example.Board_game_proj_1.entity.User;
-import com.example.Board_game_proj_1.services.intf.UserService;
+import com.example.Board_game_proj_1.services.interfaces.UserService;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
+@NoArgsConstructor
 public class UserServiceImpl implements UserService {
 
     @Autowired
     UserDao userDao;
-
-    public UserServiceImpl() {
-    }
 
     /**
      * Return User by using Login
@@ -22,6 +23,7 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     @Override
+    @Transactional
     public User findByLogin(String login) {
         return userDao.findByLogin(login);
     }
@@ -31,6 +33,7 @@ public class UserServiceImpl implements UserService {
      * @param user
      */
     @Override
+    @Transactional
     public User save(User user) {
         userDao.save(user);
         return userDao.findByLogin(user.getLogin());
@@ -41,6 +44,7 @@ public class UserServiceImpl implements UserService {
      * @param user
      */
     @Override
+    @Transactional
     public boolean update(User user) {
         return userDao.update(user);
     }
@@ -50,6 +54,7 @@ public class UserServiceImpl implements UserService {
      * @param user
      */
     @Override
+    @Transactional
     public boolean delete(User user) {
         return userDao.delete(user);
     }
@@ -59,6 +64,7 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     @Override
+    @Transactional
     public List<User> findAllUsers() {
         return userDao.findAllUsers();
     }
@@ -68,6 +74,7 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     @Override
+    @Transactional
     public User findFirstUser() {
         return userDao.findFirstUser();
     }

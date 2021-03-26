@@ -1,4 +1,4 @@
-package com.example.Board_game_proj_1.dao.intf;
+package com.example.Board_game_proj_1.dao.interfaces;
 
 import com.example.Board_game_proj_1.entity.User;
 

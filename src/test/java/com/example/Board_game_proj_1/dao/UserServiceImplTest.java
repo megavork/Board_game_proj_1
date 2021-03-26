@@ -4,7 +4,7 @@ import com.example.Board_game_proj_1.entity.User;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import com.example.Board_game_proj_1.services.UserServiceImpl;
+import com.example.Board_game_proj_1.services.classes.UserServiceImpl;
 
 import java.util.*;
 
