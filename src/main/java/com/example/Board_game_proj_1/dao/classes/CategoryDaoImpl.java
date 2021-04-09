@@ -1,14 +1,14 @@
 package com.example.Board_game_proj_1.dao.classes;
 
 import com.example.Board_game_proj_1.dao.interfaces.CategoryDao;
-import com.example.Board_game_proj_1.dao.interfaces.GameDao;
 import com.example.Board_game_proj_1.entity.Category;
 import com.example.Board_game_proj_1.entity.Game;
+import com.example.Board_game_proj_1.services.interfaces.GameService;
+import com.example.Board_game_proj_1.util.UploadObjectsFromAPI;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import com.example.Board_game_proj_1.util.UploadObjectsFromAPI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -22,6 +22,9 @@ public class CategoryDaoImpl implements CategoryDao {
     @Autowired
     private SessionFactory sessionFactory;
 
+    @Autowired
+    private GameService gameService;
+
     /**
      * Return one category from base
      * @param id
@@ -32,6 +35,11 @@ public class CategoryDaoImpl implements CategoryDao {
         Session session = sessionFactory.getCurrentSession();
         Category category = session.get(Category.class, id);
         return category;
+    }
+    @Override
+    public List<Game> getGames (String id) {
+        List<Game> gameList = findById(id).getGameList();
+        return gameList;
     }
 
     /**
@@ -69,7 +77,7 @@ public class CategoryDaoImpl implements CategoryDao {
      * @return
      */
     @Override
-    public List findAll() {
+    public List<Category> findAll() {
         Session session = sessionFactory.getCurrentSession();
         return session.createQuery("From Category").list();
     }
@@ -79,8 +87,6 @@ public class CategoryDaoImpl implements CategoryDao {
      */
     @Override
     public boolean uploadFromAPI() {
-        Session session = sessionFactory.getCurrentSession();
-
         try {
             JSONArray jsonArray = UploadObjectsFromAPI.getDateFromAPI(CategoryDao.URL,CategoryDao.OBJECT_NAME);    //получили и распарсили JSON
 
@@ -88,11 +94,7 @@ public class CategoryDaoImpl implements CategoryDao {
                 JSONObject object = jsonArray.getJSONObject(i);
 
                 Category category = new Category((String) object.opt("id"), (String) object.opt("name"));
-                category.setGameList(getGameByCategory(category.getIdCategories()));
-
-                System.out.println("Try to add data in DataBase");
-                session.save(category);
-                System.out.println("Data was added.");
+                save(category);
             }
             return true;
         } catch (Exception e) {
@@ -102,19 +104,50 @@ public class CategoryDaoImpl implements CategoryDao {
         }
     }
 
-    private List<Game> getGameByCategory(String categoryId) throws IOException {
-        Session session = sessionFactory.getCurrentSession();
+    @Override
+    public boolean setGameListForEachCategory() {
+        int count = 0;
+        /*
+        нужно пройтись по списку категорий и получать JSON с играми для каждой категории.
+        пройдемся по каждой игре, найдем ее в нашей базе и только тогда запишем в список игр для категории.
+        повторим.
+         */
+        //у этого дерьма не все категории!!!
 
+        final String URL = "https://api.boardgameatlas.com/api/search?categories=CATEGORY_ID&client_id=admin";
+        List<Category> categoryList = findAll();
+
+        for(Category category: categoryList) {
+            String URL_WITH_CATEGORY_ID = URL.replace("CATEGORY_ID",category.getIdCategories());
+            try {
+                count++;
+                JSONArray jsonArray = UploadObjectsFromAPI.getDateFromAPI(URL_WITH_CATEGORY_ID,GameDaoImpl.OBJECT_NAME);
+                List<Game> gameList = createGameListFromAPI(jsonArray);
+                category.setGameList(gameList);
+                update(category);
+                //Thread.sleep(200);
+            } catch (IOException e) {
+                e.getMessage();
+                e.printStackTrace();
+                System.out.println(count);
+
+            }
+        }
+        return true;
+    }
+
+    private List<Game> createGameListFromAPI(JSONArray array) {
         List<Game> gameList = new ArrayList<>();
-        String categoryUrl = CategoryDao.GET_GAME_URL.replace("CATEGORY_ID", categoryId);
-        JSONArray jsonArray = UploadObjectsFromAPI.getDateFromAPI(categoryUrl, GameDao.OBJECT_NAME);
 
-        for(int i=0; i<jsonArray.length(); i++) {
-            JSONObject object = jsonArray.getJSONObject(i);
-
-            Game game = session.get(Game.class, object.optString("id"));        //?????????????????????????
-            gameList.add(game);
+        for (int i = 0; i < array.length(); i++) {
+            JSONObject object = array.getJSONObject(i);
+            String gameId = object.optString("id");
+            Game game = gameService.findById(gameId);
+            if(game != null) {
+                gameList.add(game);
+            }
         }
         return gameList;
     }
+
 }

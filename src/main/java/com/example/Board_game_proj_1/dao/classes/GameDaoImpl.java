@@ -8,18 +8,17 @@ import com.example.Board_game_proj_1.entity.Game;
 import com.example.Board_game_proj_1.entity.Mechanic;
 import com.example.Board_game_proj_1.services.interfaces.CategoryService;
 import com.example.Board_game_proj_1.services.interfaces.MechanicService;
+import com.example.Board_game_proj_1.util.UploadObjectsFromAPI;
 import org.hibernate.NonUniqueObjectException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import com.example.Board_game_proj_1.util.UploadObjectsFromAPI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Repository
@@ -43,6 +42,17 @@ public class GameDaoImpl implements GameDao {
     public Game findById(String id) {
         Session session = sessionFactory.getCurrentSession();
         return session.get(Game.class, id);
+    }
+
+    @Override
+    public List findByName(String gameName) {
+        Session session = sessionFactory.getCurrentSession();
+        return session.createQuery("From Game where name LIKE 'gameName%' ").list();
+    }
+
+    public List<Game> findGameByCategoryId(String categoryId) {
+        Session session = sessionFactory.getCurrentSession();
+        return session.createQuery("From Game left join Category on ").list();
     }
 
     /**
@@ -147,12 +157,12 @@ public class GameDaoImpl implements GameDao {
                 game.setIdGame(idGame);
                 game.setName(jsonObject.optString("name"));
 
-                    game.setYear_published(jsonObject.optInt("year_published"));
-                    game.setMin_players(jsonObject.optInt("min_players"));
-                    game.setMax_players(jsonObject.optInt("max_players"));
-                    game.setMin_playtime(jsonObject.optInt("min_playtime"));
-                    game.setMax_playtime(jsonObject.optInt("max_playtime"));
-                    game.setMin_age(jsonObject.optInt("min_age"));
+                game.setYear_published(jsonObject.optInt("year_published"));
+                game.setMin_players(jsonObject.optInt("min_players"));
+                game.setMax_players(jsonObject.optInt("max_players"));
+                game.setMin_playtime(jsonObject.optInt("min_playtime"));
+                game.setMax_playtime(jsonObject.optInt("max_playtime"));
+                game.setMin_age(jsonObject.optInt("min_age"));
 
                 game.setDescription_preview(removeBlanks(jsonObject.optString("description_preview")));
 
@@ -164,10 +174,12 @@ public class GameDaoImpl implements GameDao {
                 game.setAverage_user_rating(jsonObject.optFloat("average_user_rating"));
 
                 JSONArray mechanicsArray = jsonObject.optJSONArray(MechanicDao.OBJECT_NAME);
-                game.setMechanicsTable(getMechanicsFromArray(mechanicsArray));
+                List<Mechanic> mechanicList = getMechanicsFromArray(mechanicsArray);
+                game.setMechanicsTable(mechanicList);
 
                 JSONArray categoriesArray = jsonObject.optJSONArray(CategoryDao.OBJECT_NAME);
-                game.setCategoryTable(getCategoriesFromArray(categoriesArray));
+                List<Category> categoryList = getCategoriesFromArray(categoriesArray);
+                game.setCategoryTable(categoryList);
 
                 list.add(game);
 
@@ -179,24 +191,17 @@ public class GameDaoImpl implements GameDao {
     }
     @Override
     public boolean uploadAllGamesFromAPI() {
-        Session session = sessionFactory.getCurrentSession();
         try {
             JSONArray jsonArray = UploadObjectsFromAPI.getDateFromAPI(GameDao.URL,GameDao.OBJECT_NAME);    //получили и распарсили JSON
 
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject object = jsonArray.getJSONObject(i);
 
-                String handle = (String) object.get("handle");
+                String handle = object.optString("handle");
 
                 if(!handle.isEmpty()) {
                     String urlForSearchGame = GameDao.URL_WITH_HANDLE.replace("HANDLE_NAME", handle);
-                    List<Game> list = uploadFromAPI(urlForSearchGame, handle);
-
-                    for(Game game: list) {
-                        System.out.println("Try to add data in DataBase");
-                        session.save(game);
-                        System.out.println("Data was added.");
-                    }
+                    uploadFromAPI(urlForSearchGame, handle).forEach(this::save);
                 }
             }
             return true;
@@ -206,6 +211,7 @@ public class GameDaoImpl implements GameDao {
         }
 
     }
+
     /**
      * Method will remove all blanks behind and after the line
      * String.strip()
@@ -230,7 +236,6 @@ public class GameDaoImpl implements GameDao {
                 Mechanic mechanic = mechanicService.findMechanicById(object.optString("id"));
                 mechanics.add(mechanic);
             }
-            System.out.println(Arrays.toString(mechanics.toArray()));
             return mechanics;
         } catch (ClassCastException e) {
             e.printStackTrace();
@@ -244,7 +249,6 @@ public class GameDaoImpl implements GameDao {
      * @return
      */
     private List<Category> getCategoriesFromArray(JSONArray categoriesArray) {
-
         List<Category> category = new ArrayList<>();
 
         try {
@@ -253,7 +257,6 @@ public class GameDaoImpl implements GameDao {
                 Category foundCategory = categoryService.findCategoryById(object.optString("id"));
                 category.add(foundCategory);
             }
-            System.out.println(Arrays.toString(category.toArray()));
             return category;
         } catch (ClassCastException e) {
             e.printStackTrace();

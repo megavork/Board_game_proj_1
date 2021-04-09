@@ -1,6 +1,8 @@
 package com.example.Board_game_proj_1.dao.interfaces;
 
 import com.example.Board_game_proj_1.entity.Category;
+import com.example.Board_game_proj_1.entity.Game;
+
 import java.util.List;
 
 public interface CategoryDao {
@@ -17,4 +19,6 @@ public interface CategoryDao {
     void delete(Category category);
     List findAll();
     boolean uploadFromAPI();
+    boolean setGameListForEachCategory();
+    public List<Game> getGames (String id);
 }

@@ -55,7 +55,8 @@ Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
                     <th>Year Published</th>
                     <th>Description</th>
                 </tr>
-                <c:forEach items="${gameList}" var="game">
+
+                <%--<c:forEach items="${gameList}" var="game">
                     <tr>
                         <td>${game.name}</td>
                         <td>${game.price}</td>
@@ -69,9 +70,10 @@ Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
                             <a href="/delete/id=${game.idGame}">Delete</a>
                             <a href="/gameCategory/id=${game.idGame}">Category</a>
                             <a href="/gameMechanic/id=${game.idGame}">Mechanics</a>
+                            <a href="/categoryList">categoryList</a>
                         </td>
                     </tr>
-                </c:forEach>
+                </c:forEach>--%>
             </table>
         </div>
     </body>

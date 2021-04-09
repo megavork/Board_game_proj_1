@@ -1,15 +1,19 @@
 package com.example.Board_game_proj_1.dao.classes;
 
+import com.example.Board_game_proj_1.dao.interfaces.GameDao;
 import com.example.Board_game_proj_1.dao.interfaces.MechanicDao;
+import com.example.Board_game_proj_1.entity.Game;
 import com.example.Board_game_proj_1.entity.Mechanic;
+import com.example.Board_game_proj_1.util.UploadObjectsFromAPI;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import com.example.Board_game_proj_1.util.UploadObjectsFromAPI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -76,19 +80,14 @@ public class MechanicDaoImpl implements MechanicDao {
      * Method will load data from API and put it in base
      */
     public boolean uploadFromAPI() {
-        Session session = sessionFactory.getCurrentSession();
-
         try {
             JSONArray jsonArray = UploadObjectsFromAPI.getDateFromAPI(URL,objectName);
 
             for(int i=0; i<jsonArray.length(); i++) {
                 JSONObject object = jsonArray.getJSONObject(i);
 
-                Mechanic mechanic = new Mechanic((String) object.get("id"), (String) object.get("name"));
-
-                System.out.println("Try to add data in DataBase");
-                session.save(mechanic);
-                System.out.println("Записи добавлены");
+                Mechanic mechanic = new Mechanic((String) object.opt("id"), (String) object.opt("name"));
+                save(mechanic);
             }
             return true;
         } catch (Exception e) {
@@ -96,5 +95,21 @@ public class MechanicDaoImpl implements MechanicDao {
             e.printStackTrace();
             return false;
         }
+    }
+
+    private List<Game> getGameByMechanic(String mechanicId) throws IOException {
+        Session session = sessionFactory.getCurrentSession();
+
+        List<Game> gameList = new ArrayList<>();
+        String mechanicUrl = MechanicDao.GET_GAME_URL.replace("MECHANIC_ID", mechanicId);
+        JSONArray jsonArray = UploadObjectsFromAPI.getDateFromAPI(mechanicUrl, GameDao.OBJECT_NAME);
+
+        for(int i=0; i<jsonArray.length(); i++) {
+            JSONObject object = jsonArray.getJSONObject(i);
+
+            Game game = session.get(Game.class, object.optString("id"));
+            gameList.add(game);
+        }
+        return gameList;
     }
 }

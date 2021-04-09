@@ -17,6 +17,7 @@ public interface GameDao {
     String OBJECT_NAME = "games";
 
     Game findById(String id);
+    List<Game> findByName(String name);
     void save(Game game);
     void update(Game game);
     void delete(Game game);

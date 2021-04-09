@@ -1,19 +1,21 @@
 package com.example.Board_game_proj_1.dao;
 
+import com.example.Board_game_proj_1.dao.classes.UserDaoImlp;
 import com.example.Board_game_proj_1.entity.User;
+import com.example.Board_game_proj_1.services.classes.UserServiceImpl;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import com.example.Board_game_proj_1.services.classes.UserServiceImpl;
 
-import java.util.*;
+import java.util.List;
 
 public class UserServiceImplTest {
     UserServiceImpl userServiceImpl = new UserServiceImpl();
 
     @Test
     public void saveUSer() {
-        Assert.assertNotNull(userServiceImpl.save(new User(0,"Sanya","LetsDoIt00-","megavork2@mail.ru")));
+        UserDaoImlp userDaoImlp = new UserDaoImlp();
+        Assert.assertNotNull(userDaoImlp.save(new User(1,"omega","denis0","megavork2@mail.ru")));
     }
 
     @Test

@@ -1,18 +1,16 @@
 package com.example.Board_game_proj_1.controller;
 
 import com.example.Board_game_proj_1.entity.Category;
+import com.example.Board_game_proj_1.entity.Game;
 import com.example.Board_game_proj_1.services.interfaces.CategoryService;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@AllArgsConstructor
 @RestController
-@Controller
 public class CategoryController {
 
     @Autowired
@@ -27,8 +25,15 @@ public class CategoryController {
         }
     }
 
-    @GetMapping("/categoryList")
-    public List<Category> getCategoryList() {
-        return categoryService.findAll();
+    @GetMapping("/updateGameList")
+    public boolean setGameListForEachCategory() {
+        return categoryService.setGameListForEachCategory();
     }
+
+
+    @GetMapping("/categoryList/{idCategories}")
+    public List<Game> getCategoryList(@PathVariable("idCategories")  String idCategories) {
+        return categoryService.getGames(idCategories);
+    }
+    
 }

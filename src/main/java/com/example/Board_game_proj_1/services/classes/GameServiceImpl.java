@@ -9,6 +9,7 @@ import com.example.Board_game_proj_1.services.interfaces.GameService;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.List;
@@ -128,6 +129,7 @@ public class GameServiceImpl implements GameService{
     }
 
     @Override
+    @Transactional
     public List<GameDto> convertToGameDtoList(List<Game> list) {
         return list.stream().map(Game::fromGameToGameDto).collect(Collectors.toList());
     }

@@ -1,6 +1,6 @@
 package com.example.Board_game_proj_1.entity;
 
-import com.example.Board_game_proj_1.dto.GameDto;
+import com.example.Board_game_proj_1.dto.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -41,6 +41,13 @@ public class User implements Serializable {
         this.login = login;
         this.email = email;
         this.password = String.valueOf(password.hashCode());
+    }
+
+    public UserDto toUserDto(String login, String password) {
+        UserDto userDto = new UserDto();
+        userDto.setUsername(login);
+        userDto.setPassword(password);
+        return userDto;
     }
 
 }

@@ -2,6 +2,7 @@ package com.example.Board_game_proj_1.services.classes;
 
 import com.example.Board_game_proj_1.dao.interfaces.CategoryDao;
 import com.example.Board_game_proj_1.entity.Category;
+import com.example.Board_game_proj_1.entity.Game;
 import com.example.Board_game_proj_1.services.interfaces.CategoryService;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,5 +78,17 @@ public class CategoryServiceImpl implements CategoryService {
     @Transactional
     public boolean uploadFromAPI() {
         return categoryDao.uploadFromAPI();
+    }
+
+    @Override
+    @Transactional
+    public boolean setGameListForEachCategory() {
+        return categoryDao.setGameListForEachCategory();
+    }
+
+    @Override
+    @Transactional
+    public List<Game> getGames(String id) {
+        return categoryDao.getGames(id);
     }
 }
