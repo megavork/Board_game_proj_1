@@ -10,7 +10,7 @@
         <title>Registration page</title>
     </head>
     <body>
-        <form class="decor" method="post" action="/main" id="Name">
+        <form class="decor" method="POST" action="/reg" id="Name">
             <div class="form-left-decoration"></div>
             <div class="form-right-decoration"></div>
             <div class="circle"></div>
@@ -19,8 +19,8 @@
                 <h1><b>Registration</b></h1>
 
                 <input type="text" name="Login" placeholder="Enter your login" required/>
-                <input type="password" minlength="6" name="password_one" placeholder="Enter password" required/>
-                <input type="password" minlength="6" name="password_two" placeholder="Enter password again" required/>
+                <input type="password" minlength="2" name="password_one" placeholder="Enter password" required/>
+                <input type="password" minlength="2" name="password_two" placeholder="Enter password again" required/>
 
                 <h2><b>Enter your e-mail:</b></h2>
                 <input type="email" name="price" placeholder="Enter your e-mail" required/>

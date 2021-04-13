@@ -1,23 +1,21 @@
 package com.example.Board_game_proj_1.controller;
 
-import com.example.Board_game_proj_1.dto.GameDto;
-import com.example.Board_game_proj_1.entity.Category;
 import com.example.Board_game_proj_1.entity.User;
 import com.example.Board_game_proj_1.services.interfaces.CategoryService;
 import com.example.Board_game_proj_1.services.interfaces.GameService;
 import com.example.Board_game_proj_1.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-@Controller
+@RestController
 public class UserController {
+
+    @Autowired
+    private HttpServletRequest context;
 
     @Autowired
     private UserService userService;    //это должен быть интерфейс
@@ -31,8 +29,8 @@ public class UserController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView home() {
         List<User> listUser = userService.findAllUsers();
-        List<GameDto> dtoList = gameService.convertToGameDtoList(gameService.findAll());
-        List<Category> categoryList = categoryService.findAll();
+        //List<GameDto> dtoList = gameService.convertToGameDtoList(gameService.findAll());
+        //List<Category> categoryList = categoryService.findAll();
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("index");
         modelAndView.addObject("listUser", listUser);
@@ -47,17 +45,9 @@ public class UserController {
         return listUser;
     }
 
-    @RequestMapping(value = "/save", method = RequestMethod.POST)
+    //сделай чтобы у дто и юзера совпадали поля, но у дто некоторые могли быть = 0...это для логинки...и не ноль - при регистрации.
+    @RequestMapping(value = "/registr", method = RequestMethod.POST)
     public User saveUser(@RequestBody User user) {
         return userService.save(user);
-    }
-
-    @RequestMapping(value = "/reg", method = RequestMethod.GET)
-    public ModelAndView registration() {
-        List<User> listUser = userService.findAllUsers();
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("reg_page");
-        modelAndView.addObject("listUser", listUser);
-        return modelAndView;
     }
 }

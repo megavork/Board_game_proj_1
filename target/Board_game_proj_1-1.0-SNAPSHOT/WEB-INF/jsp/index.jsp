@@ -15,7 +15,7 @@ Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
                 <input type="text" name="keyword" />
                 <input type="submit" value="Search" />
             </form>
-            <h3><a href="/reg">New User</a></h3>
+            <h3><a href="/registration">New User</a></h3>
             <table border="1" cellpadding="5">
                 <tr>
                     <th>Name</th>
@@ -25,13 +25,13 @@ Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
                 </tr>
                 <c:forEach items="${listUser}" var="user">
                     <tr>
-                        <td>${user.login}</td>
+                        <td>${user.username}</td>
                         <td>${user.email}</td>
                         <td>${user.user_role}</td>
                         <td>
-                            <a href="/edit?id=${user.login}">Edit</a>
+                            <a href="/edit?id=${user.username}">Edit</a>
 
-                            <a href="/delete?id=${user.login}">Delete</a>
+                            <a href="/delete?id=${user.username}">Delete</a>
                         </td>
                     </tr>
                 </c:forEach>

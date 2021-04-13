@@ -4,6 +4,7 @@ import com.example.Board_game_proj_1.dao.interfaces.UserDao;
 import com.example.Board_game_proj_1.entity.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -15,15 +16,19 @@ public class UserDaoImlp implements UserDao {
     @Autowired
     private SessionFactory sessionFactory;
 
+
     /**
      * Return one category from base
-     * @param login
+     * @param username
      * @return
      */
     @Override
-    public User findByLogin(String login) {
+    public User findByLogin(String username) {
         Session session = sessionFactory.getCurrentSession();
-        User user = session.get(User.class, login);
+        User user = session.get(User.class, username);
+        /*Query query = session.createQuery(  "From User where username IN (:username)");
+        query.setParameter("username", username);
+        User user = (User) query.getSingleResult();*/
         return user;
     }
 
@@ -37,7 +42,7 @@ public class UserDaoImlp implements UserDao {
         Session session = sessionFactory.getCurrentSession();
         try {
             session.persist(user);
-            return findByLogin(user.getLogin());
+            return findByLogin(user.getUsername());
         } catch (Exception e) {
             e.printStackTrace();
             return null;

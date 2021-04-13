@@ -6,16 +6,21 @@ import com.example.Board_game_proj_1.services.classes.UserServiceImpl;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 
 import java.util.List;
 
 public class UserServiceImplTest {
     UserServiceImpl userServiceImpl = new UserServiceImpl();
 
+    @Autowired
+    private ApplicationContext applicationContext;
+
     @Test
     public void saveUSer() {
-        UserDaoImlp userDaoImlp = new UserDaoImlp();
-        Assert.assertNotNull(userDaoImlp.save(new User(1,"omega","denis0","megavork2@mail.ru")));
+        UserDaoImlp userDaoImlp = applicationContext.getBean("sampleBean", UserDaoImlp.class);
+        Assert.assertNotNull(userDaoImlp);
     }
 
     @Test

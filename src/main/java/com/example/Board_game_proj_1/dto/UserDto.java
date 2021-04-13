@@ -3,13 +3,13 @@ package com.example.Board_game_proj_1.dto;
 import com.example.Board_game_proj_1.entity.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @Data
-@NoArgsConstructor
-public class UserDto {
+public class UserDto implements Serializable {
 
     private String username;
     private String password;
@@ -19,14 +19,17 @@ public class UserDto {
         this.password = password;
     }
 
+    public UserDto() {
+    }
+
     //password will not transferring
     //role will not transferring
     public User toUser(String login, String password) {
         User user = new User();
-        user.setLogin(login);
+        user.setUsername(login);
         user.setPassword(password); //добавить методы валидации!!!!!!!!!!!!
         user.setEmail("");
-        user.setUser_role(1);
+        user.setUser_role("USER");
         return user;
     }
 

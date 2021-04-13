@@ -43,7 +43,7 @@ public class HibernateConfig {
      * @return
      */
     @Bean
-    public DataSource getDataSource() {
+    public DataSource dataSource() {
         DriverManagerDataSource managerDataSource = new DriverManagerDataSource();
         managerDataSource.setDriverClassName(environment.getRequiredProperty("hibernate.connection.driver_class"));
         managerDataSource.setUrl(environment.getRequiredProperty("hibernate.connection.url"));
@@ -52,6 +52,16 @@ public class HibernateConfig {
         managerDataSource.setPassword(environment.getRequiredProperty("hibernate.connection.pool_size"));
         return managerDataSource;
     }
+/*    //не нужный
+    @Bean
+    public DataSource getJDBCdataSource() {
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName(environment.getRequiredProperty("jdbc.driverClassName"));
+        dataSource.setUrl(environment.getRequiredProperty("jdbc.url"));
+        dataSource.setUsername(environment.getRequiredProperty("jdbc.username"));
+        dataSource.setPassword(environment.getRequiredProperty("jdbc.password"));
+        return dataSource;
+    }*/
 
     /**
      * create SessionFactory with hibernate parameters and return it.
@@ -60,7 +70,7 @@ public class HibernateConfig {
     @Bean
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();
-        sessionFactoryBean.setDataSource(getDataSource());
+        sessionFactoryBean.setDataSource(dataSource());
         sessionFactoryBean.setPackagesToScan("com.example.Board_game_proj_1");
         sessionFactoryBean.setHibernateProperties(hibernateProperties());
         return sessionFactoryBean;

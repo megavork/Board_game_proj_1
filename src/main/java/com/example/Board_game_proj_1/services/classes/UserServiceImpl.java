@@ -1,10 +1,12 @@
 package com.example.Board_game_proj_1.services.classes;
 
 import com.example.Board_game_proj_1.dao.interfaces.UserDao;
+import com.example.Board_game_proj_1.dto.UserDto;
 import com.example.Board_game_proj_1.entity.User;
 import com.example.Board_game_proj_1.services.interfaces.UserService;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -25,6 +27,8 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public User findByLogin(String login) {
+        //если принимает ответ от JSON
+
         return userDao.findByLogin(login);
     }
 
@@ -35,8 +39,11 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public User save(User user) {
+        //passwordEncoder.matches(принятый, изБазы);        //для проверки пароля.
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userDao.save(user);
-        return userDao.findByLogin(user.getLogin());
+        return userDao.findByLogin(user.getUsername());
     }
 
     /**
@@ -79,4 +86,11 @@ public class UserServiceImpl implements UserService {
         return userDao.findFirstUser();
     }
 
+    @Override
+    @Transactional
+    public boolean isAuthorized(UserDto userDto) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        User user = findByLogin(userDto.getUsername());
+        return passwordEncoder.matches(user.getUsername(), user.getPassword());
+    }
 }

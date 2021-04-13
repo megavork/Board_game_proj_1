@@ -1,9 +1,7 @@
 package com.example.Board_game_proj_1.entity;
 
 import com.example.Board_game_proj_1.dto.UserDto;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,32 +13,42 @@ import java.io.Serializable;
 @Entity
 @Data
 @Table(schema = "board_game_sch", name = "users")
-@NoArgsConstructor
-@AllArgsConstructor
 public class User implements Serializable {
 
     @Id
-    @Column(name = "login", length = 45)
-    String login;
+    @Column(name = "username", length = 45)
+    String username;
     @Column(name = "user_role")
-    int user_role;
-    @Column(name = "password", length = 45)
+    String user_role;
+    @Column(name = "password", length = 100)
     String password;
     @Column(name = "email")
     String email;
 
+    public User() {
+        this.user_role = "USER";
+    }
+
+    public User(User user) {
+        this.username = user.username;
+        this.user_role = user.user_role;
+        this.email = user.email;
+        this.password = user.password;
+        this.email=user.email;
+    }
+
     /**
      * Constructor int user_role, String login, String password, String email
      * @param user_role
-     * @param login
+     * @param username
      * @param password
      * @param email
      */
-    public User(int user_role, String login, String password, String email) {
+    public User(String user_role, String username, String password, String email) {
         this.user_role = user_role;
-        this.login = login;
+        this.username = username;
         this.email = email;
-        this.password = String.valueOf(password.hashCode());
+        this.password = password;
     }
 
     public UserDto toUserDto(String login, String password) {
