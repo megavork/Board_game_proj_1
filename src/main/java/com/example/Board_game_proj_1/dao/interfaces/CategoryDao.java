@@ -9,8 +9,9 @@ public interface CategoryDao {
     /**
      * URL for get data from API
      */
-    String URL = "https://api.boardgameatlas.com/api/game/categories?client_id=BE1Mg8GUFu";
-    String GET_GAME_URL = "https://api.boardgameatlas.com/api/search?categories=CATEGORY_ID&client_id=BE1Mg8GUFu";
+    //String URL = "https://api.boardgameatlas.com/api/game/categories?client_id=BE1Mg8GUFu";
+    String URL = "https://api.boardgameatlas.com/api/search?categories=CATEGORY_ID&client_id=admin";
+    //String GET_GAME_URL = "https://api.boardgameatlas.com/api/search?categories=CATEGORY_ID&client_id=admin";
     String OBJECT_NAME = "categories";
 
     Category findById(String id);
@@ -20,5 +21,6 @@ public interface CategoryDao {
     List findAll();
     boolean uploadFromAPI();
     boolean setGameListForEachCategory();
-    public List<Game> getGames (String id);
+    List<Category> getCountOfGameFromEachCategory (String count);
+
 }

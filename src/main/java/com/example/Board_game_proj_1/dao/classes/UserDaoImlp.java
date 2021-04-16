@@ -32,6 +32,20 @@ public class UserDaoImlp implements UserDao {
         return user;
     }
 
+    @Override
+    public User findByToken(String token) {
+        Session session = sessionFactory.getCurrentSession();
+        Query query =  session.createQuery("From User where token = :token");
+        query.setParameter("token", token);
+        try {
+            return (User) query.getSingleResult();
+        } catch (ClassCastException cls) {
+            cls.printStackTrace();
+            System.out.println("ClassCastException: can not cast Object to User.class.");
+            return null;
+        }
+    }
+
     /**
      * Save Object in category base. (By using session.persist())
      * @param user
@@ -95,22 +109,5 @@ public class UserDaoImlp implements UserDao {
             e.printStackTrace();
             return null;
         }
-    }
-
-    /**
-     * NEED TO CHECK
-     * @return
-     */
-    @Override
-    public User findFirstUser() {
-        Session session = sessionFactory.getCurrentSession();
-        try {
-            User user = (User) session.createQuery("SELECT TOP (1) From User where user_role = 0").list();
-            return user;
-        } catch (ClassCastException e) {
-            e.printStackTrace();
-            return null;
-        }
-
     }
 }

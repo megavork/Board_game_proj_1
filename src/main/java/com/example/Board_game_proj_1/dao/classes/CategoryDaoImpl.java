@@ -11,13 +11,23 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class CategoryDaoImpl implements CategoryDao {
+
+    private final String SQL_FIND_5_GAME_FROM_EACH_CATEGORY = "SELECT COUNT(:counters) From Category";
+    private static final int COUNT_OF_ONE_REQUEST = 5;
+
+    Comparator<Game> compare = Comparator.comparing(Game::getAverage_user_rating).reversed();
+    //SELECT  code,
+    //LAG(code) OVER(ORDER BY code) prev_code,
+    //LEAD(code) OVER(ORDER BY code) next_code
+    //FROM printer;
 
     @Autowired
     private SessionFactory sessionFactory;
@@ -36,10 +46,13 @@ public class CategoryDaoImpl implements CategoryDao {
         Category category = session.get(Category.class, id);
         return category;
     }
+
     @Override
-    public List<Game> getGames (String id) {
-        List<Game> gameList = findById(id).getGameList();
-        return gameList;
+    public List<Category> getCountOfGameFromEachCategory(String count) {
+        List<Category> categoryList = findAll();
+        return categoryList.stream().peek(category -> category.getGameList().stream().sorted(compare).limit(COUNT_OF_ONE_REQUEST)).peek(category -> category.toJson()).collect(Collectors.toList());
+
+        //return categoryList;
     }
 
     /**
@@ -93,7 +106,7 @@ public class CategoryDaoImpl implements CategoryDao {
             for(int i=0; i<jsonArray.length(); i++) {
                 JSONObject object = jsonArray.getJSONObject(i);
 
-                Category category = new Category((String) object.opt("id"), (String) object.opt("name"));
+                Category category = new Category(object.optString("id"), object.optString("name"));
                 save(category);
             }
             return true;
@@ -114,7 +127,7 @@ public class CategoryDaoImpl implements CategoryDao {
          */
         //у этого дерьма не все категории!!!
 
-        final String URL = "https://api.boardgameatlas.com/api/search?categories=CATEGORY_ID&client_id=admin";
+        final String URL = CategoryDao.URL;
         List<Category> categoryList = findAll();
 
         for(Category category: categoryList) {
@@ -129,8 +142,6 @@ public class CategoryDaoImpl implements CategoryDao {
             } catch (IOException e) {
                 e.getMessage();
                 e.printStackTrace();
-                System.out.println(count);
-
             }
         }
         return true;

@@ -2,18 +2,18 @@ package com.example.Board_game_proj_1.entity;
 
 import com.example.Board_game_proj_1.dto.UserDto;
 import lombok.Data;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Collection;
 
 
 @Entity
 @Data
 @Table(schema = "board_game_sch", name = "users")
-public class User implements Serializable {
+public class User implements Serializable, UserDetails {
 
     @Id
     @Column(name = "username", length = 45)
@@ -24,21 +24,31 @@ public class User implements Serializable {
     String password;
     @Column(name = "email")
     String email;
+    @Column(name = "token")
+    String token;
+
+    @Transient
+    private boolean isAccountNonExpired;
+    @Transient
+    private boolean isEnabled;
+    @Transient
+    private boolean isAccountNonLocked;
+    @Transient
+    private boolean isCredentialsNonExpired;
 
     public User() {
         this.user_role = "USER";
     }
 
-    public User(User user) {
-        this.username = user.username;
-        this.user_role = user.user_role;
-        this.email = user.email;
-        this.password = user.password;
-        this.email=user.email;
+    public void unlockAccount() {
+        this.isAccountNonExpired = true;
+        this.isAccountNonLocked = true;
+        this.isEnabled = true;
+        this.isCredentialsNonExpired = true;
     }
 
     /**
-     * Constructor int user_role, String login, String password, String email
+     * Constructor int user_role, String login, String password, String email, String token
      * @param user_role
      * @param username
      * @param password
@@ -51,11 +61,35 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public UserDto toUserDto(String login, String password) {
+    public UserDto toUserDto(String login) {
         UserDto userDto = new UserDto();
         userDto.setUsername(login);
-        userDto.setPassword(password);
         return userDto;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        //Collections.singletonList(new SimpleGrantedAuthority(userEntity.getRoleEntity().getName())
+        return null;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return isAccountNonExpired;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return isAccountNonLocked;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return isEnabled;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return isCredentialsNonExpired;
+    }
 }

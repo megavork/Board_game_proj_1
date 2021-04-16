@@ -88,7 +88,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional
-    public List<Game> getGames(String id) {
-        return categoryDao.getGames(id);
+    public List<Category> getCountOfGameFromEachCategory (String count){
+        return categoryDao.getCountOfGameFromEachCategory(count);
     }
 }

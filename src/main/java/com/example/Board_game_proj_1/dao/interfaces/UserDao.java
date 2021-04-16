@@ -11,5 +11,5 @@ public interface UserDao {
     boolean update(User user);
     boolean delete(User user);
     List<User> findAllUsers();
-    User findFirstUser();
+    User findByToken(String token);
 }

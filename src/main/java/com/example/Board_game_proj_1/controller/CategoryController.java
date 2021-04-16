@@ -3,9 +3,11 @@ package com.example.Board_game_proj_1.controller;
 import com.example.Board_game_proj_1.entity.Category;
 import com.example.Board_game_proj_1.entity.Game;
 import com.example.Board_game_proj_1.services.interfaces.CategoryService;
+import kotlin.ParameterName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -31,9 +33,10 @@ public class CategoryController {
     }
 
 
-    @GetMapping("/categoryList/{idCategories}")
-    public List<Game> getCategoryList(@PathVariable("idCategories")  String idCategories) {
-        return categoryService.getGames(idCategories);
+    @GetMapping("/category")
+    public List<Category> getCategoryList(@RequestParam String count) {
+        //нужно вывести по 5 игр от каждой категории
+        return categoryService.getCountOfGameFromEachCategory(count);
     }
     
 }

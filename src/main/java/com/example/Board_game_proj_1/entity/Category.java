@@ -1,7 +1,8 @@
 package com.example.Board_game_proj_1.entity;
 
-import com.example.Board_game_proj_1.dto.CategoryDto;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -12,13 +13,15 @@ import java.util.List;
 
 @Entity
 @Table(schema = "board_game_sch", name = "categories_game")
-@NoArgsConstructor
 public class Category implements Serializable {
     @Id
     @Column(name = "idCategories", length = 15)
     String idCategories;
     @Column(name = "name")
     String name;
+
+    public Category() {
+    }
 
     //@Transient
     //@ManyToMany(mappedBy="categories_game",fetch = FetchType.EAGER)
@@ -34,10 +37,15 @@ public class Category implements Serializable {
         this.name = name;
     }
 
-    public CategoryDto fromEntityToDto() {
-        CategoryDto categoryDto = new CategoryDto();
-
-        return categoryDto;
+    public String toJson() {
+        ObjectMapper mapper = new ObjectMapper();
+        String object = new String("null");
+        try {
+            object = mapper.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return object;
     }
 
     public String getIdCategories() {
@@ -67,5 +75,15 @@ public class Category implements Serializable {
     @Override
     public String toString() {
         return super.toString();
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
     }
 }

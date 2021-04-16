@@ -8,11 +8,12 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
-@Service
+@Service("customerService")
 @NoArgsConstructor
 public class UserServiceImpl implements UserService {
 
@@ -30,6 +31,12 @@ public class UserServiceImpl implements UserService {
         //если принимает ответ от JSON
 
         return userDao.findByLogin(login);
+    }
+
+    @Override
+    @Transactional
+    public Optional findByToken(String token) {
+        return Optional.of(userDao.findByToken(token));
     }
 
     /**
@@ -76,21 +83,18 @@ public class UserServiceImpl implements UserService {
         return userDao.findAllUsers();
     }
 
-    /**
-     * Return only one first User from table
-     * @return
-     */
     @Override
     @Transactional
-    public User findFirstUser() {
-        return userDao.findFirstUser();
-    }
-
-    @Override
-    @Transactional
-    public boolean isAuthorized(UserDto userDto) {
+    public String isAuthorized(UserDto userDto) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         User user = findByLogin(userDto.getUsername());
-        return passwordEncoder.matches(user.getUsername(), user.getPassword());
+        if(passwordEncoder.matches(user.getUsername(), user.getPassword())) {
+            String token = UUID.randomUUID().toString();
+            user.setToken(token);
+            System.out.println(token);
+            return user.getToken();
+        } else {
+            return null;
+        }
     }
 }

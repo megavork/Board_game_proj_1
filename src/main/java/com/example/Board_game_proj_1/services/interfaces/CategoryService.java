@@ -14,5 +14,5 @@ public interface CategoryService {
     List<Category> findAll();
     boolean uploadFromAPI();
     boolean setGameListForEachCategory();
-    public List<Game> getGames (String id);
+    List<Category> getCountOfGameFromEachCategory (String count);
 }
