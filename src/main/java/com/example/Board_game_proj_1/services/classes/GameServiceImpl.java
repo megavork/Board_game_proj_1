@@ -124,8 +124,8 @@ public class GameServiceImpl implements GameService{
      */
     @Override
     @Transactional
-    public boolean uploadAllGamesFromAPI() throws IOException {
-        return gameDao.uploadAllGamesFromAPI();
+    public boolean uploadFromAPI() throws IOException {
+        return gameDao.uploadFromAPI();
     }
 
     @Override

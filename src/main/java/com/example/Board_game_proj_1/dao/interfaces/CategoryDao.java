@@ -1,7 +1,7 @@
 package com.example.Board_game_proj_1.dao.interfaces;
 
+import com.example.Board_game_proj_1.dto.CategoryDto;
 import com.example.Board_game_proj_1.entity.Category;
-import com.example.Board_game_proj_1.entity.Game;
 
 import java.util.List;
 
@@ -9,10 +9,7 @@ public interface CategoryDao {
     /**
      * URL for get data from API
      */
-    //String URL = "https://api.boardgameatlas.com/api/game/categories?client_id=BE1Mg8GUFu";
-    String URL = "https://api.boardgameatlas.com/api/search?categories=CATEGORY_ID&client_id=admin";
     //String GET_GAME_URL = "https://api.boardgameatlas.com/api/search?categories=CATEGORY_ID&client_id=admin";
-    String OBJECT_NAME = "categories";
 
     Category findById(String id);
     void save(Category category);
@@ -20,7 +17,7 @@ public interface CategoryDao {
     void delete(Category category);
     List findAll();
     boolean uploadFromAPI();
-    boolean setGameListForEachCategory();
-    List<Category> getCountOfGameFromEachCategory (String count);
+    List<Category> findFirstCount(int count);
+    List<CategoryDto> getCountOfGameFromEachCategory (String category_count, String game_count);
 
 }

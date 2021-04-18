@@ -18,7 +18,7 @@ public class UploadObjectsFromAPI{
      * @return
      * @throws IOException
      */
-    public static JSONArray getDateFromAPI(String URL, String objectName) throws IOException {
+    public static JSONArray getDataFromAPI(String URL, String objectName) throws IOException {
 
         URL obj = new URL(URL);
         HttpURLConnection connection = (HttpURLConnection) obj.openConnection();

@@ -31,7 +31,7 @@ public class GameDto {
         game.setMin_playtime(this.getMin_playtime());
         game.setMax_playtime(this.getMax_playtime());
         game.setMin_age(this.getMin_age());
-        game.setDescription_preview(this.getDescription_preview());
+        game.setDescription(this.getDescription_preview());
         game.setThumb_url(this.getThumb_url());
         game.setImage_url(this.getImage_url());
         game.setPrice(this.getPrice());

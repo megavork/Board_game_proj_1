@@ -1,5 +1,6 @@
 package com.example.Board_game_proj_1.services.interfaces;
 
+import com.example.Board_game_proj_1.dto.CategoryDto;
 import com.example.Board_game_proj_1.entity.Category;
 import com.example.Board_game_proj_1.entity.Game;
 
@@ -13,6 +14,5 @@ public interface CategoryService {
     void deleteCategory(Category category);
     List<Category> findAll();
     boolean uploadFromAPI();
-    boolean setGameListForEachCategory();
-    List<Category> getCountOfGameFromEachCategory (String count);
+    List<CategoryDto> getCountOfGameFromEachCategory (String category_count, String game_count);
 }

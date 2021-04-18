@@ -1,6 +1,7 @@
 package com.example.Board_game_proj_1.services.classes;
 
 import com.example.Board_game_proj_1.dao.interfaces.CategoryDao;
+import com.example.Board_game_proj_1.dto.CategoryDto;
 import com.example.Board_game_proj_1.entity.Category;
 import com.example.Board_game_proj_1.entity.Game;
 import com.example.Board_game_proj_1.services.interfaces.CategoryService;
@@ -82,13 +83,14 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional
-    public boolean setGameListForEachCategory() {
-        return categoryDao.setGameListForEachCategory();
-    }
+    public List<CategoryDto> getCountOfGameFromEachCategory (String category_count, String game_count){
 
-    @Override
-    @Transactional
-    public List<Category> getCountOfGameFromEachCategory (String count){
-        return categoryDao.getCountOfGameFromEachCategory(count);
+        if(category_count.isEmpty())
+            category_count="0";
+
+        if(game_count.isEmpty())
+            game_count="0";
+
+        return categoryDao.getCountOfGameFromEachCategory(category_count,game_count);
     }
 }

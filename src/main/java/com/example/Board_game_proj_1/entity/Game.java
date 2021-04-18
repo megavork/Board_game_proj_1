@@ -2,10 +2,11 @@ package com.example.Board_game_proj_1.entity;
 
 import com.example.Board_game_proj_1.dto.GameDto;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.jsoup.Jsoup;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -32,8 +33,8 @@ public class Game implements Serializable {
     int max_playtime;
     @Column(name = "min_age")
     int min_age;
-    @Column(name = "description_preview", length = 3000)
-    String description_preview;
+    @Column(name = "description", length = 8000)
+    String description;
     @Column(name = "thumb_url")
     String thumb_url;
     @Column(name = "image_url")
@@ -45,6 +46,7 @@ public class Game implements Serializable {
     @Column(name = "average_user_rating")
     float average_user_rating;
 
+    @JsonBackReference
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable (name="depend_game_mech",
@@ -60,8 +62,6 @@ public class Game implements Serializable {
         inverseJoinColumns=@JoinColumn(name="idCategoryForGame"))
     List<Category> categoryTable = new ArrayList<>();
 
-
-
     public GameDto fromGameToGameDto() {
         GameDto gameDto = new GameDto();
         gameDto.setIdGame(this.getIdGame());
@@ -72,7 +72,7 @@ public class Game implements Serializable {
         gameDto.setMin_playtime(this.getMin_playtime());
         gameDto.setMax_playtime(this.getMax_playtime());
         gameDto.setMin_age(this.getMin_age());
-        gameDto.setDescription_preview(this.getDescription_preview());
+        gameDto.setDescription_preview(this.getDescription());
         gameDto.setThumb_url(this.getThumb_url());
         gameDto.setImage_url(this.getImage_url());
         gameDto.setPrice(this.getPrice());
@@ -145,12 +145,12 @@ public class Game implements Serializable {
         this.min_age = min_age;
     }
 
-    public String getDescription_preview() {
-        return description_preview;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDescription_preview(String description_preview) {
-        this.description_preview = description_preview;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getThumb_url() {
@@ -222,5 +222,25 @@ public class Game implements Serializable {
     @Override
     public String toString() {
         return super.toString();
+    }
+
+    public Game fromJSON(JSONObject jsonObject) {
+
+        this.description = Jsoup.parse(jsonObject.optString("description").strip()).text();
+        this.idGame = jsonObject.optString("id");
+        this.name = jsonObject.optString("name");
+        this.year_published = jsonObject.optInt("year_published");
+        this.min_players = jsonObject.optInt("min_players");
+        this.max_players = jsonObject.optInt("max_players");
+        this.min_playtime = jsonObject.optInt("min_playtime");
+        this.max_playtime = jsonObject.optInt("max_playtime");
+        this.min_age = jsonObject.optInt("min_age");
+        this.thumb_url = jsonObject.optString("thumb_url");
+        this.image_url = jsonObject.optString("image_url");
+        this.price = jsonObject.optFloat("price");
+        this.discount = jsonObject.optFloat("discount");
+        this.average_user_rating = jsonObject.optFloat("average_user_rating");
+
+        return this;
     }
 }

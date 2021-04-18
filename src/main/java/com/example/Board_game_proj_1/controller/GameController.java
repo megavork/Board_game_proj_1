@@ -27,7 +27,7 @@ public class GameController {
     @RequestMapping(value = "/upload", method = RequestMethod.GET)
     public List<Game> uploadGamesFromAPI() {
         try {
-            if(gameService.uploadAllGamesFromAPI()) {
+            if(gameService.uploadFromAPI()) {
                 List<Game> gameList = gameService.findAll();
                 return gameList;
             } else {

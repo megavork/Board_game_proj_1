@@ -1,11 +1,10 @@
 package com.example.Board_game_proj_1.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.example.Board_game_proj_1.dto.CategoryDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -85,5 +84,13 @@ public class Category implements Serializable {
     @Override
     public boolean equals(Object obj) {
         return super.equals(obj);
+    }
+
+    public CategoryDto toCategoryDto() {
+        CategoryDto categoryDto = new CategoryDto();
+        categoryDto.setIdCategories(this.idCategories);
+        categoryDto.setName(this.name);
+        categoryDto.setGameList(this.gameList);
+        return categoryDto;
     }
 }

@@ -18,7 +18,7 @@ public interface GameService {
     List<Game> findAll();
     List<Mechanic> getGameMechanicsById(String idGame);
     List<Category> getGameCategoriesById(String idGame);
-    boolean uploadAllGamesFromAPI() throws IOException;
+    boolean uploadFromAPI() throws IOException;
     List<Mechanic> getGameMechanic(String idGame);
     List<Category> getGameCategory(String idGame);
 

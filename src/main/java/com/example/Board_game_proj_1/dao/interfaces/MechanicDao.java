@@ -9,9 +9,7 @@ public interface MechanicDao {
     /**
      * URL for get data from API
      */
-    String URL = "https://api.boardgameatlas.com/api/game/mechanics?client_id=BE1Mg8GUFu";
     String GET_GAME_URL = "https://api.boardgameatlas.com/api/search?categories=MECHANIC_ID&client_id=BE1Mg8GUFu";
-    String OBJECT_NAME = "mechanics";
 
     Mechanic findById(String id);
     void save(Mechanic mechanic);
