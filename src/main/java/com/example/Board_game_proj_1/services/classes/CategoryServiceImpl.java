@@ -30,6 +30,12 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryDao.findById(idCategory);
     }
 
+    @Override
+    @Transactional
+    public List<CategoryDto> findByListId(List listId, int game_count) {
+        return categoryDao.findByListId(listId,game_count);
+    }
+
     /**
      * Save Object in category base
      * @param category
@@ -66,6 +72,16 @@ public class CategoryServiceImpl implements CategoryService {
      */
     @Override
     @Transactional
+    public List<Category> findAllWithGames() {
+        return categoryDao.findAll();
+    }
+
+    /**
+     * Return all Categories from base
+     * @return
+     */
+    @Override
+    @Transactional
     public List<Category> findAll() {
         return categoryDao.findAll();
     }
@@ -83,14 +99,8 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional
-    public List<CategoryDto> getCountOfGameFromEachCategory (String category_count, String game_count){
+    public List<CategoryDto> getCountOfGameFromEachCategory (int category_count, int game_count, int page_number) {
 
-        if(category_count.isEmpty())
-            category_count="0";
-
-        if(game_count.isEmpty())
-            game_count="0";
-
-        return categoryDao.getCountOfGameFromEachCategory(category_count,game_count);
+        return categoryDao.getCountOfGameFromEachCategory(category_count,game_count, page_number);
     }
 }

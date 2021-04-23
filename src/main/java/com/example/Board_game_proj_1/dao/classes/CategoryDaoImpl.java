@@ -3,30 +3,22 @@ package com.example.Board_game_proj_1.dao.classes;
 import com.example.Board_game_proj_1.dao.interfaces.CategoryDao;
 import com.example.Board_game_proj_1.dto.CategoryDto;
 import com.example.Board_game_proj_1.entity.Category;
-import com.example.Board_game_proj_1.entity.Game;
 import com.example.Board_game_proj_1.services.interfaces.GameService;
 import com.example.Board_game_proj_1.util.UploadObjectsFromAPI;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Repository
 public class CategoryDaoImpl implements CategoryDao {
 
     private final String CATEGORY_URL = "https://api.boardgameatlas.com/api/game/categories?client_id=admin";
     private final String OBJECT_NAME = "categories";
-
-    private final int COUNT_GAMES_IN_ONE_REQUEST = 5;
-
-    Comparator<Game> compare = Comparator.comparing(Game::getAverage_user_rating).reversed();
 
     @Autowired
     private SessionFactory sessionFactory;
@@ -47,42 +39,58 @@ public class CategoryDaoImpl implements CategoryDao {
     }
 
     @Override
-    public List<Category> findFirstCount(int count) {
-        if(count <= 0) {
-            return new ArrayList<>();
+    public List<CategoryDto> findByListId(List listId, int game_count) {
+        List<CategoryDto> resultList = new ArrayList<>();
+
+        for(int i=0; i < listId.size(); i++) {
+            String id = listId.get(i).toString();
+            id = id.substring(id.indexOf("=")+1,id.indexOf("}"));
+            Category category = findById(id);
+            CategoryDto categoryDto = category.toCategoryDto();
+            categoryDto.setGameList(categoryDto.getGameList().subList(game_count - game_count, game_count));
+            resultList.add(categoryDto);
         }
-        String limitQuery = "FROM Category LIMIT "+ count + " OFFSET " + (count-COUNT_GAMES_IN_ONE_REQUEST);
+        return resultList;
+    }
+
+    /**
+     * Return all objects limit base
+     * @return
+     */
+    @Override
+    public List<Category> findAllWithGames(int limit, int offset) {
         Session session = sessionFactory.getCurrentSession();
-        Query query =  session.createQuery(limitQuery);
-        return (List<Category>) query.getSingleResult();
+        return session.createQuery("From Category").setMaxResults(limit).setFirstResult(offset).getResultList();
+    }
+
+    /**
+     * Return all objects from base
+     * @return
+     */
+    @Override
+    public List<Category> findAll() {
+        Session session = sessionFactory.getCurrentSession();
+        List<Category> categoryList = session.createQuery("From Category").getResultList();
+        return categoryList;
     }
 
     @Override
-    public List<CategoryDto> getCountOfGameFromEachCategory(String category_count, String game_count) {
-        final int CATEGORY_COUNT = Integer.parseInt(category_count);
-        final int GAME_COUNT = Integer.parseInt(game_count);
+    public List<CategoryDto> getCountOfGameFromEachCategory(int category_count, int game_count, int page_number) {
+        final int first_index = 0;
+        List<Category> categoryList = findAllWithGames(category_count, page_number*category_count);
 
-        List<Category> categoryList = findFirstCount(CATEGORY_COUNT);
-
-        for(Category category: categoryList) {
-            List<Game> gameList = category.getGameList().stream().sorted(compare).collect(Collectors.toList());
-            category.setGameList(gameList);
-        }
-
-        List<CategoryDto> result = new ArrayList<>();
+        List<CategoryDto> categoryDtoList = new ArrayList<>();
 
         for(Category category: categoryList) {
-            int lenght = category.getGameList().size();
-
             CategoryDto categoryDto = category.toCategoryDto();
-            categoryDto.setGameList(new ArrayList<>());
-
-            for(int i = GAME_COUNT; i < lenght || i < GAME_COUNT + COUNT_GAMES_IN_ONE_REQUEST +1; i++) {
-                categoryDto.getGameList().add(category.getGameList().get(i));
+            if(game_count > category.getGameList().size()) {
+                categoryDto.setGameList(category.getGameList().subList(first_index,category.getGameList().size()));
+            } else {
+                categoryDto.setGameList(category.getGameList().subList(first_index,game_count));
             }
-            result.add(categoryDto);
+            categoryDtoList.add(categoryDto);
         }
-        return result;
+        return categoryDtoList;
     }
 
     /**
@@ -113,16 +121,6 @@ public class CategoryDaoImpl implements CategoryDao {
     public void delete(Category category) {
         Session session = sessionFactory.getCurrentSession();
         session.delete(category);
-    }
-
-    /**
-     * Return all objects from base
-     * @return
-     */
-    @Override
-    public List<Category> findAll() {
-        Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("From Category").list();
     }
 
     /**

@@ -51,7 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(final WebSecurity webSecurity) {
         //webSecurity.ignoring().antMatchers("/token/**", "/user", "/registr");
-        webSecurity.ignoring().antMatchers("/token/**", "/login", "/" ,"/category/**");
+        webSecurity.ignoring().antMatchers("/token/**", "/login", "/" ,"/categories/**");
     }
 
     @Bean

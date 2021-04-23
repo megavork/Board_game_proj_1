@@ -1,8 +1,10 @@
 package com.example.Board_game_proj_1.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -19,11 +21,18 @@ public class Mechanic implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @Transient
+    /*@Transient
     @ManyToMany(mappedBy="mechanics_game",fetch = FetchType.EAGER)
     @JoinTable (name="depend_game_mech",
             joinColumns=@JoinColumn (name="idMechanicForGame"),
+            inverseJoinColumns=@JoinColumn(name="idGamesForMech"))*/
+    @JsonBackReference
+    @ManyToMany(fetch = FetchType.LAZY)
+    @Fetch(FetchMode.JOIN)
+    @JoinTable (name="depend_game_mech",
+            joinColumns=@JoinColumn (name="idMechanicForGame"),
             inverseJoinColumns=@JoinColumn(name="idGamesForMech"))
+    @OrderBy(value = "average_user_rating DESC")
     List<Game> gameList = new ArrayList<>();
 
     public Mechanic(String idMechanics, String name) {

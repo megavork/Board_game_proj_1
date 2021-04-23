@@ -67,7 +67,7 @@ public class GameDaoImpl implements GameDao {
     @Override
     public void save(Game game) {
         Session session = sessionFactory.getCurrentSession();
-        session.save(game);
+        session.saveOrUpdate(game);
         //session.merge(game);
     }
 

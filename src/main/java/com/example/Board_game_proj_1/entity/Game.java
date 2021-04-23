@@ -2,13 +2,16 @@ package com.example.Board_game_proj_1.entity;
 
 import com.example.Board_game_proj_1.dto.GameDto;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.annotations.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.OrderBy;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,20 +49,25 @@ public class Game implements Serializable {
     @Column(name = "average_user_rating")
     float average_user_rating;
 
-    @JsonBackReference
+    /*@JsonBackReference
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable (name="depend_game_mech",
             joinColumns=@JoinColumn (name="idGamesForMech"),
-            inverseJoinColumns=@JoinColumn(name="idMechanicForGame"))
+            inverseJoinColumns=@JoinColumn(name="idMechanicForGame"))*/
+    @JsonBackReference
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "gameList")
     List<Mechanic> mechanicsTable = new ArrayList<>();
 
-    @JsonBackReference
+/*    @JsonBackReference
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinTable (name="depend_game_category",
         joinColumns=@JoinColumn (name="idGamesForCateg"),
-        inverseJoinColumns=@JoinColumn(name="idCategoryForGame"))
+        inverseJoinColumns=@JoinColumn(name="idCategoryForGame"))*/
+
+    @JsonBackReference
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "gameList")
     List<Category> categoryTable = new ArrayList<>();
 
     public GameDto fromGameToGameDto() {
