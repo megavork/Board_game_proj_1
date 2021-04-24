@@ -2,11 +2,8 @@ package com.example.Board_game_proj_1.entity;
 
 import com.example.Board_game_proj_1.dto.CategoryDto;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.Where;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -24,17 +21,9 @@ public class Category implements Serializable {
     public Category() {
     }
 
-/*    //@Transient
-    //@ManyToMany(mappedBy="categories_game",fetch = FetchType.EAGER)
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @LazyCollection(LazyCollectionOption.TRUE)
-    //@Fetch(FetchMode.JOIN)
-    @JoinTable (name="depend_game_category",
-            joinColumns=@JoinColumn (name="idCategoryForGame"),
-            inverseJoinColumns=@JoinColumn(name="idGamesForCateg"))*/
     @JsonBackReference
     @ManyToMany(fetch = FetchType.LAZY)
-    @Fetch(FetchMode.JOIN)
+    //@Fetch(FetchMode.JOIN)
     @JoinTable (name="depend_game_category",
             joinColumns=@JoinColumn (name="idCategoryForGame"),
             inverseJoinColumns=@JoinColumn(name="idGamesForCateg"))
@@ -92,5 +81,15 @@ public class Category implements Serializable {
         categoryDto.setGameList(this.gameList);
         return categoryDto;
     }
+
+
+/*    //@Transient
+    //@ManyToMany(mappedBy="categories_game",fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @LazyCollection(LazyCollectionOption.TRUE)
+    //@Fetch(FetchMode.JOIN)
+    @JoinTable (name="depend_game_category",
+            joinColumns=@JoinColumn (name="idCategoryForGame"),
+            inverseJoinColumns=@JoinColumn(name="idGamesForCateg"))*/
 
 }

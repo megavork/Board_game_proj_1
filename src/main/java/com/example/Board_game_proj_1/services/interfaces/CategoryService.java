@@ -9,7 +9,7 @@ import java.util.List;
 public interface CategoryService {
 
     Category findCategoryById(String idCategory);
-    List<CategoryDto> findByListId(List listId, int game_count);
+    List<CategoryDto> findByListId(List<String> listId, int game_count);
     void saveCategory(Category category);
     void updateCategory(Category category);
     void deleteCategory(Category category);

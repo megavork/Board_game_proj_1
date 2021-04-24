@@ -9,10 +9,9 @@ public interface CategoryDao {
     /**
      * URL for get data from API
      */
-    //String GET_GAME_URL = "https://api.boardgameatlas.com/api/search?categories=CATEGORY_ID&client_id=admin";
 
     Category findById(String id);
-    List<CategoryDto> findByListId(List listId, int game_count);
+    List<CategoryDto> findByListId(List<String> listId, int game_count);
     void save(Category category);
     void update(Category category);
     void delete(Category category);

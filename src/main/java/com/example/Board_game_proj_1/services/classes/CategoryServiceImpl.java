@@ -32,7 +32,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional
-    public List<CategoryDto> findByListId(List listId, int game_count) {
+    public List<CategoryDto> findByListId(List<String> listId, int game_count) {
         return categoryDao.findByListId(listId,game_count);
     }
 

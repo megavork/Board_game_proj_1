@@ -3,11 +3,8 @@ package com.example.Board_game_proj_1.controller;
 import com.example.Board_game_proj_1.dto.CategoryDto;
 import com.example.Board_game_proj_1.entity.Category;
 import com.example.Board_game_proj_1.services.interfaces.CategoryService;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.lang.reflect.Array;
 import java.util.*;
 
 @RestController
@@ -24,7 +21,7 @@ public class CategoryController {
         return categoryService.getCountOfGameFromEachCategory(category_count,game_count, page_number);
     }
 
-    @GetMapping("/categories/list")
+    @GetMapping("/categories/list") //so long time!!!
     public List<Category> getCategoriesList() {
         List<Category> categoryList = categoryService.findAll();
         return categoryList;

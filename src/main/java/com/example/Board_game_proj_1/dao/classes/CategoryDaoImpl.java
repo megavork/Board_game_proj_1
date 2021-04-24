@@ -39,12 +39,10 @@ public class CategoryDaoImpl implements CategoryDao {
     }
 
     @Override
-    public List<CategoryDto> findByListId(List listId, int game_count) {
+    public List<CategoryDto> findByListId(List<String> listId, int game_count) {
         List<CategoryDto> resultList = new ArrayList<>();
 
-        for(int i=0; i < listId.size(); i++) {
-            String id = listId.get(i).toString();
-            id = id.substring(id.indexOf("=")+1,id.indexOf("}"));
+        for(String id: listId) {
             Category category = findById(id);
             CategoryDto categoryDto = category.toCategoryDto();
             categoryDto.setGameList(categoryDto.getGameList().subList(game_count - game_count, game_count));
