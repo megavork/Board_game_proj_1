@@ -1,5 +1,6 @@
 package com.example.Board_game_proj_1.dao.interfaces;
 
+import com.example.Board_game_proj_1.dto.GameDto;
 import com.example.Board_game_proj_1.entity.Category;
 import com.example.Board_game_proj_1.entity.Game;
 import com.example.Board_game_proj_1.entity.Mechanic;
@@ -17,6 +18,7 @@ public interface GameDao {
 
 
     Game findById(String id);
+    GameDto findDTOById(String id);
     List<Game> findByName(String name);
     void save(Game game);
     void update(Game game);

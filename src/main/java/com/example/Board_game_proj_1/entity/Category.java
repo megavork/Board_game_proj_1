@@ -2,8 +2,6 @@ package com.example.Board_game_proj_1.entity;
 
 import com.example.Board_game_proj_1.dto.CategoryDto;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -78,7 +76,7 @@ public class Category implements Serializable {
         CategoryDto categoryDto = new CategoryDto();
         categoryDto.setIdCategories(this.idCategories);
         categoryDto.setName(this.name);
-        categoryDto.setGameList(this.gameList);
+        //categoryDto.setGameList(this.gameList);
         return categoryDto;
     }
 

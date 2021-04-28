@@ -11,6 +11,7 @@ import java.util.List;
 public interface GameService {
     
     Game findById(String id);
+    GameDto findDTOById(String id);
     void save(Game game);
     void update(Game game);
     void delete(Game game);
@@ -21,6 +22,4 @@ public interface GameService {
     boolean uploadFromAPI() throws IOException;
     List<Mechanic> getGameMechanic(String idGame);
     List<Category> getGameCategory(String idGame);
-
-    List<GameDto> convertToGameDtoList(List<Game> list);
 }

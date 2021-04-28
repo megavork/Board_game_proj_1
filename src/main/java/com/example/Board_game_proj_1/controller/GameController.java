@@ -4,9 +4,7 @@ import com.example.Board_game_proj_1.dto.GameDto;
 import com.example.Board_game_proj_1.entity.Category;
 import com.example.Board_game_proj_1.entity.Game;
 import com.example.Board_game_proj_1.entity.Mechanic;
-import com.example.Board_game_proj_1.services.interfaces.CategoryService;
 import com.example.Board_game_proj_1.services.interfaces.GameService;
-import com.example.Board_game_proj_1.services.interfaces.MechanicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
@@ -17,12 +15,6 @@ public class GameController {
 
     @Autowired
     private GameService gameService;
-
-    @Autowired
-    private CategoryService categoryService;
-
-    @Autowired
-    private MechanicService mechanicService;
 
     @RequestMapping(value = "/upload", method = RequestMethod.GET)
     public List<Game> uploadGamesFromAPI() {
@@ -44,14 +36,9 @@ public class GameController {
         return gameService.findById(ID);
     }
 
-    @GetMapping(value = "/getById/id={idGame}")
-    public Game getDtoGame(@PathVariable("idGame") String id)  {
-        return gameService.findById(id);
-    }
-
-    @GetMapping(value = "/gameList")
-    public List<GameDto> getFullGameList()  {
-        return gameService.convertToGameDtoList(gameService.findAll());
+    @GetMapping(value = "/games/{idGame}")
+    public GameDto getDtoGame(@PathVariable("idGame") String id)  {
+        return gameService.findDTOById(id);
     }
 
     @GetMapping(value = "/gameCategory/id={idGame}")

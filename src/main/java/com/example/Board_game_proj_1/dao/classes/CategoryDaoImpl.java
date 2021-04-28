@@ -11,6 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,22 +44,18 @@ public class CategoryDaoImpl implements CategoryDao {
         List<CategoryDto> resultList = new ArrayList<>();
 
         for(String id: listId) {
+            CategoryDto categoryDto = new CategoryDto();
             Category category = findById(id);
-            CategoryDto categoryDto = category.toCategoryDto();
-            categoryDto.setGameList(categoryDto.getGameList().subList(game_count - game_count, game_count));
+
+            if(!category.getGameList().isEmpty())
+                categoryDto.setGameList(category.getGameList());
+
+            categoryDto.setIdCategories(category.getIdCategories());
+            categoryDto.setName(category.getName());
+
             resultList.add(categoryDto);
         }
         return resultList;
-    }
-
-    /**
-     * Return all objects limit base
-     * @return
-     */
-    @Override
-    public List<Category> findAllWithGames(int limit, int offset) {
-        Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("From Category").setMaxResults(limit).setFirstResult(offset).getResultList();
     }
 
     /**
@@ -72,15 +69,25 @@ public class CategoryDaoImpl implements CategoryDao {
         return categoryList;
     }
 
+    /**
+     * Return all objects limit base
+     * @return
+     */
+    @Override
+    public List<Category> findAllWithGames(int limit, int offset) {
+        Session session = sessionFactory.getCurrentSession();
+        return session.createQuery("From Category").setFirstResult(offset).setMaxResults(limit).getResultList();
+    }
+
     @Override
     public List<CategoryDto> getCountOfGameFromEachCategory(int category_count, int game_count, int page_number) {
         final int first_index = 0;
         List<Category> categoryList = findAllWithGames(category_count, page_number*category_count);
-
         List<CategoryDto> categoryDtoList = new ArrayList<>();
 
         for(Category category: categoryList) {
             CategoryDto categoryDto = category.toCategoryDto();
+
             if(game_count > category.getGameList().size()) {
                 categoryDto.setGameList(category.getGameList().subList(first_index,category.getGameList().size()));
             } else {

@@ -1,7 +1,12 @@
 package com.example.Board_game_proj_1.dto;
 
+import com.example.Board_game_proj_1.entity.Category;
 import com.example.Board_game_proj_1.entity.Game;
+import com.example.Board_game_proj_1.entity.Mechanic;
 import lombok.Data;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 public class GameDto {
@@ -20,6 +25,9 @@ public class GameDto {
     float price;
     float discount;
     float average_user_rating;
+
+    List<Category> categories = new ArrayList<>();
+    List<Mechanic> mechanics = new ArrayList<>();
 
     public Game fromGameDtoToGame() {
         Game game = new Game();

@@ -1,6 +1,7 @@
 package com.example.Board_game_proj_1.dao.classes;
 
 import com.example.Board_game_proj_1.dao.interfaces.GameDao;
+import com.example.Board_game_proj_1.dto.GameDto;
 import com.example.Board_game_proj_1.entity.Category;
 import com.example.Board_game_proj_1.entity.Game;
 import com.example.Board_game_proj_1.entity.Mechanic;
@@ -46,18 +47,28 @@ public class GameDaoImpl implements GameDao {
         Session session = sessionFactory.getCurrentSession();
         return session.get(Game.class, id);
     }
+    /**
+     * Return one Game from base
+     * @param id
+     * @return
+     */
+    @Override
+    public GameDto findDTOById(String id) {
+        Game game = findById(id);
+        GameDto gameDto = game.toGameDto();
+
+        if(!game.getCategoryTable().isEmpty())
+            gameDto.setCategories(game.getCategoryTable());
+        if(!game.getMechanicsTable().isEmpty())
+            gameDto.setMechanics(game.getMechanicsTable());
+
+        return gameDto;
+    }
 
     @Override
     public List findByName(String gameName) {
         Session session = sessionFactory.getCurrentSession();
         return session.createQuery("From Game where name LIKE 'gameName%' ").list();
-    }
-
-
-
-    public List<Game> findGameByCategoryId(String categoryId) {
-        Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("From Game left join Category on ").list();
     }
 
     /**
@@ -68,7 +79,6 @@ public class GameDaoImpl implements GameDao {
     public void save(Game game) {
         Session session = sessionFactory.getCurrentSession();
         session.saveOrUpdate(game);
-        //session.merge(game);
     }
 
     /**

@@ -13,7 +13,7 @@ public class CategoryController {
     @Autowired
     CategoryService categoryService;
 
-    @PostMapping("/categories/games")
+    @PostMapping("/categories/games")       //TIME
     public List<CategoryDto> getCategoriesGames(@RequestBody Map<String,String> object) {
         int category_count = Integer.parseInt(object.get("category_count"));
         int game_count = Integer.parseInt(object.get("game_count"));
@@ -21,7 +21,7 @@ public class CategoryController {
         return categoryService.getCountOfGameFromEachCategory(category_count,game_count, page_number);
     }
 
-    @GetMapping("/categories/list") //so long time!!!
+    @GetMapping("/categories/list")
     public List<Category> getCategoriesList() {
         List<Category> categoryList = categoryService.findAll();
         return categoryList;
@@ -29,7 +29,7 @@ public class CategoryController {
 
     @PostMapping("/categories/search/list")
     //List<CategoryDto>
-    public List<CategoryDto> getCategoriesSearchByList(@RequestBody Map<String, List> object) {
+    public List<Category> getCategoriesSearchByList(@RequestBody Map<String, List> object) {
         List objectList = object.get("categories");
         System.out.println(objectList.get(0).toString());
         return categoryService.findByListId(objectList,5);

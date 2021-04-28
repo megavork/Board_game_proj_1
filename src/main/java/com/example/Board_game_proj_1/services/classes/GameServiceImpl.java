@@ -34,6 +34,17 @@ public class GameServiceImpl implements GameService{
     }
 
     /**
+     * Return one Game from base
+     * @param idGame
+     * @return
+     */
+    @Override
+    @Transactional
+    public GameDto findDTOById(String idGame) {
+        return gameDao.findDTOById(idGame);
+    }
+
+    /**
      * Save Object in Game base
      * @param game
      */
@@ -126,12 +137,6 @@ public class GameServiceImpl implements GameService{
     @Transactional
     public boolean uploadFromAPI() throws IOException {
         return gameDao.uploadFromAPI();
-    }
-
-    @Override
-    @Transactional
-    public List<GameDto> convertToGameDtoList(List<Game> list) {
-        return list.stream().map(Game::fromGameToGameDto).collect(Collectors.toList());
     }
 
 }

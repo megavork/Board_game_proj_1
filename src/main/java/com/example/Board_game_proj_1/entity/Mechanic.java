@@ -28,7 +28,7 @@ public class Mechanic implements Serializable {
             inverseJoinColumns=@JoinColumn(name="idGamesForMech"))*/
     @JsonBackReference
     @ManyToMany(fetch = FetchType.LAZY)
-    @Fetch(FetchMode.JOIN)
+    //@Fetch(FetchMode.JOIN)
     @JoinTable (name="depend_game_mech",
             joinColumns=@JoinColumn (name="idMechanicForGame"),
             inverseJoinColumns=@JoinColumn(name="idGamesForMech"))

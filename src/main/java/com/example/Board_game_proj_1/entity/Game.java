@@ -70,7 +70,7 @@ public class Game implements Serializable {
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "gameList")
     List<Category> categoryTable = new ArrayList<>();
 
-    public GameDto fromGameToGameDto() {
+    public GameDto toGameDto() {
         GameDto gameDto = new GameDto();
         gameDto.setIdGame(this.getIdGame());
         gameDto.setName(this.getName());
