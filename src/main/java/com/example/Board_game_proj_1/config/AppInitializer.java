@@ -13,15 +13,15 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return new Class[]{WebMvcConfig.class};
+        return new Class[]{WebMvcConfig.class,HibernateConfig.class};
     }
 
     @Override
     protected String[] getServletMappings() {
         return new String[]{"/"};
     }
-    //для русских символов
 
+    //для русских символов
     @Override
     protected Filter[] getServletFilters() {
         CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();

@@ -1,6 +1,9 @@
 package com.example.Board_game_proj_1.util;
 
-import com.example.Board_game_proj_1.entity.*;
+import com.example.Board_game_proj_1.entity.Category;
+import com.example.Board_game_proj_1.entity.Game;
+import com.example.Board_game_proj_1.entity.Mechanic;
+import com.example.Board_game_proj_1.entity.User;
 import lombok.NoArgsConstructor;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;

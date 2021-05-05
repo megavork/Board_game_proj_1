@@ -1,46 +1,128 @@
 package com.example.Board_game_proj_1.entity;
 
-import lombok.AllArgsConstructor;
+import com.example.Board_game_proj_1.dto.UserDto;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import lombok.Generated;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 @Entity
 @Data
 @Table(schema = "board_game_sch", name = "users")
-@NoArgsConstructor
-@AllArgsConstructor
-public class User implements Serializable {
+public class User implements Serializable, UserDetails {
+
+    private static final AtomicInteger count = new AtomicInteger(0);
+
     @Id
-    @Column(name = "idUsers")
-    int idUsers;
+    @Column(name = "userId")
+    private int userId;
+    @Column(name = "username", length = 45)
+    private String username;
     @Column(name = "user_role")
-    int user_role;
-    @Column(name = "login", length = 45)
-    String login;
-    @Column(name = "password", length = 45)
-    String password;
+    private String user_role;
+    @Column(name = "password", length = 100)
+    private String password;
     @Column(name = "email")
-    String email;
+    private String email;
+    @Column(name = "token")
+    private String token;
+
+    @JsonBackReference
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable (name="orders",
+            joinColumns=@JoinColumn (name="userID"),
+            inverseJoinColumns=@JoinColumn(name="gameID"))
+    List<Game> orderGameList = new ArrayList<>();
+
+    @Transient
+    private boolean isAccountNonExpired;
+    @Transient
+    private boolean isEnabled;
+    @Transient
+    private boolean isAccountNonLocked;
+    @Transient
+    private boolean isCredentialsNonExpired;
+
+    public User() {
+        this.user_role = "USER";
+        this.token = "";
+        this.enable();
+    }
+
+    public void enable() {
+        this.isAccountNonExpired = true;
+        this.isAccountNonLocked = true;
+        this.isEnabled = true;
+        this.isCredentialsNonExpired = true;
+    }
+
+    public User disable() {
+        this.isAccountNonExpired = false;
+        this.isAccountNonLocked = false;
+        this.isEnabled = false;
+        this.isCredentialsNonExpired = false;
+        this.setToken(null);
+        return this;
+    }
 
     /**
-     * Constructor int user_role, String login, String password, String email
+     * Constructor int user_role, String login, String password, String email, String token
      * @param user_role
-     * @param login
+     * @param username
      * @param password
      * @param email
      */
-    public User(int user_role, String login, String password, String email) {
+    public User(String user_role, String username, String password, String email) {
         this.user_role = user_role;
-        this.login = login;
+        this.username = username;
         this.email = email;
-        this.password = String.valueOf(password.hashCode());
+        this.password = password;
     }
 
+    public UserDto toUserDto() {
+        UserDto userDto = new UserDto();
+        userDto.setUsername(this.getUsername());
+        userDto.setEmail(this.getEmail());
+        return userDto;
+    }
+
+    public void setToken() {
+        this.setToken(UUID.randomUUID().toString());
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        //Collections.singletonList(new SimpleGrantedAuthority(userEntity.getRoleEntity().getName())
+        return null;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return isAccountNonExpired;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return isAccountNonLocked;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return isEnabled;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return isCredentialsNonExpired;
+    }
 }
