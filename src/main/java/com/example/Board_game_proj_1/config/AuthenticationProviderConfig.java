@@ -1,6 +1,5 @@
 package com.example.Board_game_proj_1.config;
 
-import com.example.Board_game_proj_1.dto.UserDto;
 import com.example.Board_game_proj_1.entity.User;
 import com.example.Board_game_proj_1.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +30,8 @@ public class AuthenticationProviderConfig extends AbstractUserDetailsAuthenticat
         //
     }
 
+
+
     @Override
     protected User retrieveUser(String userName, UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken) throws AuthenticationException {
         Object token = usernamePasswordAuthenticationToken.getCredentials();
@@ -40,7 +41,7 @@ public class AuthenticationProviderConfig extends AbstractUserDetailsAuthenticat
                     .map(String::valueOf)
                     .flatMap(userService::findByToken)
                     .orElseThrow(() -> new UsernameNotFoundException("Cannot find user with authentication token=" + token));
-            user.unlockAccount();
+            user.enable();
             return  user;
         } catch (Throwable throwable) {
             throwable.printStackTrace();

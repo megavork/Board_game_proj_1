@@ -17,6 +17,7 @@ import org.springframework.stereotype.Repository;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Repository
 public class GameDaoImpl implements GameDao {
@@ -48,13 +49,17 @@ public class GameDaoImpl implements GameDao {
         return session.get(Game.class, id);
     }
     /**
-     * Return one Game from base
+     * Return one Game from base what has received ID
      * @param id
      * @return
      */
     @Override
     public GameDto findDTOById(String id) {
         Game game = findById(id);
+
+        if(game == null)
+            return null;
+
         GameDto gameDto = game.toGameDto();
 
         if(!game.getCategoryTable().isEmpty())
@@ -65,10 +70,31 @@ public class GameDaoImpl implements GameDao {
         return gameDto;
     }
 
+    /**
+     * Will return all games what start from received row.
+     * @param gameName
+     * @return
+     */
     @Override
     public List findByName(String gameName) {
         Session session = sessionFactory.getCurrentSession();
         return session.createQuery("From Game where name LIKE 'gameName%' ").list();
+    }
+
+    /**
+     * Will return all games what received from request
+     * @param listId
+     * @return
+     */
+    @Override
+    public List<Game> findByListId(List<String> listId) {
+        List<Game> gameList = new ArrayList<>();
+        for(String id: listId) {
+            Game game = findById(id);
+            if(game != null)
+                gameList.add(game);
+        }
+        return gameList;
     }
 
     /**
@@ -142,7 +168,10 @@ public class GameDaoImpl implements GameDao {
         return findById(idGame).getCategoryTable();
     }
 
-
+    /**
+     * Method upload all games to my base from another API
+     * @return
+     */
     @Override
     public boolean uploadFromAPI() {
         List<Category> categoryList = categoryService.findAll();
@@ -154,6 +183,10 @@ public class GameDaoImpl implements GameDao {
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject object = jsonArray.getJSONObject(i);
                     Game game = new Game().fromJSON(object);
+                    if(game.getPrice() == 0) {
+                        Random random = new Random();
+                        game.setPrice(random.nextFloat() * 23);
+                    }
                     game.setCategoryTable(getCategoriesFromArray(object.optJSONArray("categories")));
                     game.setMechanicsTable(getMechanicsFromArray(object.optJSONArray("mechanics")));
 

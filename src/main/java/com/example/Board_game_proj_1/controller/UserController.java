@@ -1,53 +1,84 @@
 package com.example.Board_game_proj_1.controller;
 
+import com.example.Board_game_proj_1.dto.UserDto;
 import com.example.Board_game_proj_1.entity.User;
-import com.example.Board_game_proj_1.services.interfaces.CategoryService;
-import com.example.Board_game_proj_1.services.interfaces.GameService;
 import com.example.Board_game_proj_1.services.interfaces.UserService;
+import com.example.Board_game_proj_1.util.JsonConverter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 @RestController
 public class UserController {
 
     @Autowired
-    private HttpServletRequest context;
+    private UserService userService;
 
-    @Autowired
-    private UserService userService;    //это должен быть интерфейс
+    @PostMapping(value = "/login")
+    public ResponseEntity login(@RequestBody UserDto userDto) {
+        String result = userService.isAuthorized(userDto);
 
-    @Autowired
-    private GameService gameService;    //это должен быть интерфейс
-
-    @Autowired
-    private CategoryService categoryService;   //это должен быть интерфейс
-
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ModelAndView home() {
-        List<User> listUser = userService.findAllUsers();
-        //List<GameDto> dtoList = gameService.convertToGameDtoList(gameService.findAll());
-        //List<Category> categoryList = categoryService.findAll();
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("index");
-        modelAndView.addObject("listUser", listUser);
-        //modelAndView.addObject("gameList", dtoList);
-        //modelAndView.addObject("categoryList", categoryList);
-        return modelAndView;
+        if(result.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(result);
+        } else {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(JsonConverter.toJson("token",result));
+        }
     }
 
-    @GetMapping("/list")
-    public List getUserList() {
-        List<User> listUser = userService.findAllUsers();
-        return listUser;
+    @GetMapping(value = "/logout")
+    public ResponseEntity logout(@RequestHeader(name = "Authorization") String token) {
+        String userToken = token.substring(token.indexOf(" ")+1);
+
+        if(userService.disableUser(userToken)) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(true);
+        } else {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                    .body(false);
+        }
     }
 
-    //сделай чтобы у дто и юзера совпадали поля, но у дто некоторые могли быть = 0...это для логинки...и не ноль - при регистрации.
-    @RequestMapping(value = "/registr", method = RequestMethod.POST)
-    public User saveUser(@RequestBody User user) {
-        return userService.save(user);
+    @GetMapping(value = "/user")
+    public UserDto getUserDto(@RequestBody UserDto userDto) {
+        User user = userService.findByLogin(userDto.getUsername());
+        return user.toUserDto();
+    }
+
+    @PostMapping(value = "/register")
+    public ResponseEntity saveUser(@RequestBody UserDto userDto) {
+        return userService.save(userDto.toUser());
+    }
+
+    @GetMapping(value = "/users")
+    public ResponseEntity putOrder(@RequestHeader(name = "Authorization") String token) {
+        String userToken = token.substring(token.indexOf(" ")+1);
+        User user = (User) userService.findByToken(userToken).get();
+
+        if(user.isEnabled()) {
+            return ResponseEntity.status(HttpStatus.OK).body(userService.findAllUsers());
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("");
+        }
+    }
+    /*
+    edit user
+POST /user/:id
+with authorization header
+{ username: 'new username', email: 'new email', 'role': 'new role' }
+DO NOT OVERRIDE PASSWORD :)
+     */
+    @PostMapping(value = "/user/edit")
+    public ResponseEntity login(@RequestHeader(name = "Authorization") String token, @RequestBody UserDto userDto) {
+        String userToken = token.substring(token.indexOf(" ")+1);
+        User user = (User) userService.findByToken(userToken).get();
+
+        if(user.getToken().equals(userToken)) {
+            return ResponseEntity.status(HttpStatus.OK).body(userService.update(userDto.toUser()));
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("");
+        }
     }
 }

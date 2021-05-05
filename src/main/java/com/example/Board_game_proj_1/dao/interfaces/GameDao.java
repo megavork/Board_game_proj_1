@@ -19,6 +19,7 @@ public interface GameDao {
 
     Game findById(String id);
     GameDto findDTOById(String id);
+    List<Game> findByListId(List<String> listId);
     List<Game> findByName(String name);
     void save(Game game);
     void update(Game game);

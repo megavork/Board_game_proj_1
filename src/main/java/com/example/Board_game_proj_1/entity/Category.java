@@ -12,9 +12,9 @@ import java.util.List;
 public class Category implements Serializable {
     @Id
     @Column(name = "idCategories", length = 15)
-    String idCategories;
+    private String idCategories;
     @Column(name = "name")
-    String name;
+    private String name;
 
     public Category() {
     }

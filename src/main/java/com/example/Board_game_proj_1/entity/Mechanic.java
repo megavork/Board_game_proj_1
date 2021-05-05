@@ -3,8 +3,6 @@ package com.example.Board_game_proj_1.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -28,7 +26,6 @@ public class Mechanic implements Serializable {
             inverseJoinColumns=@JoinColumn(name="idGamesForMech"))*/
     @JsonBackReference
     @ManyToMany(fetch = FetchType.LAZY)
-    //@Fetch(FetchMode.JOIN)
     @JoinTable (name="depend_game_mech",
             joinColumns=@JoinColumn (name="idMechanicForGame"),
             inverseJoinColumns=@JoinColumn(name="idGamesForMech"))

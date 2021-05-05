@@ -8,6 +8,8 @@ import com.example.Board_game_proj_1.entity.Mechanic;
 import com.example.Board_game_proj_1.services.interfaces.GameService;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -44,6 +46,12 @@ public class GameServiceImpl implements GameService{
         return gameDao.findDTOById(idGame);
     }
 
+    @Override
+    @Transactional
+    public List<Game> findByListId(List<String> listId) {
+        return gameDao.findByListId(listId);
+    }
+
     /**
      * Save Object in Game base
      * @param game
@@ -78,7 +86,6 @@ public class GameServiceImpl implements GameService{
      * Delete one Game from base
      * @param id
      */
-    @Override
     @Transactional
     public void deleteById(String id) {
         gameDao.deleteById(id);
@@ -99,7 +106,6 @@ public class GameServiceImpl implements GameService{
      * @param idGame
      * @return
      */
-    @Override
     @Transactional
     public List<Mechanic> getGameMechanicsById(String idGame) {
         return gameDao.getGameMechanicsById(idGame);
@@ -122,7 +128,6 @@ public class GameServiceImpl implements GameService{
      * @param idGame
      * @return
      */
-    @Override
     @Transactional
     public List<Category> getGameCategoriesById(String idGame) {
         return gameDao.findById(idGame).getCategoryTable();

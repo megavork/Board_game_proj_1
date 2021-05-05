@@ -19,7 +19,7 @@ public class GameDto {
     int min_playtime;
     int max_playtime;
     int min_age;
-    String description_preview;
+    String description;
     String thumb_url;
     String image_url;
     float price;
@@ -39,7 +39,7 @@ public class GameDto {
         game.setMin_playtime(this.getMin_playtime());
         game.setMax_playtime(this.getMax_playtime());
         game.setMin_age(this.getMin_age());
-        game.setDescription(this.getDescription_preview());
+        game.setDescription(this.getDescription());
         game.setThumb_url(this.getThumb_url());
         game.setImage_url(this.getImage_url());
         game.setPrice(this.getPrice());

@@ -2,15 +2,11 @@ package com.example.Board_game_proj_1.entity;
 
 import com.example.Board_game_proj_1.dto.GameDto;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import org.hibernate.annotations.*;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 
 import javax.persistence.*;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -21,33 +17,35 @@ import java.util.List;
 public class Game implements Serializable {
     @Id
     @Column(name = "idGame", length = 15)
-    String idGame;
+    private String idGame;
     @Column(name = "name")
-    String name;
+    private String name;
     @Column(name = "year_published")
-    int year_published;
+    private int year_published;
     @Column(name = "min_players")
-    int min_players;
+    private int min_players;
     @Column(name = "max_players")
-    int max_players;
+    private int max_players;
     @Column(name = "min_playtime")
-    int min_playtime;
+    private int min_playtime;
     @Column(name = "max_playtime")
-    int max_playtime;
+    private int max_playtime;
     @Column(name = "min_age")
-    int min_age;
+    private int min_age;
     @Column(name = "description", length = 8000)
-    String description;
+    private String description;
     @Column(name = "thumb_url")
-    String thumb_url;
+    private String thumb_url;
     @Column(name = "image_url")
-    String image_url;
+    private String image_url;
     @Column(name = "price")
-    float price;
+    //UPDATE game_objects SET price = (FLOOR((RAND() * (200-100+1))+100)) WHERE price = 0;
+    //select * from game_objects;
+    private float price;
     @Column(name = "discount")
-    float discount;
+    private float discount;
     @Column(name = "average_user_rating")
-    float average_user_rating;
+    private float average_user_rating;
 
     /*@JsonBackReference
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
@@ -59,16 +57,13 @@ public class Game implements Serializable {
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "gameList")
     List<Mechanic> mechanicsTable = new ArrayList<>();
 
-/*    @JsonBackReference
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @JoinTable (name="depend_game_category",
-        joinColumns=@JoinColumn (name="idGamesForCateg"),
-        inverseJoinColumns=@JoinColumn(name="idCategoryForGame"))*/
-
     @JsonBackReference
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "gameList")
     List<Category> categoryTable = new ArrayList<>();
+
+    @JsonBackReference
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "orderGameList")
+    List<User> userList = new ArrayList<>();
 
     public GameDto toGameDto() {
         GameDto gameDto = new GameDto();
@@ -80,7 +75,7 @@ public class Game implements Serializable {
         gameDto.setMin_playtime(this.getMin_playtime());
         gameDto.setMax_playtime(this.getMax_playtime());
         gameDto.setMin_age(this.getMin_age());
-        gameDto.setDescription_preview(this.getDescription());
+        gameDto.setDescription(this.getDescription());
         gameDto.setThumb_url(this.getThumb_url());
         gameDto.setImage_url(this.getImage_url());
         gameDto.setPrice(this.getPrice());
@@ -215,6 +210,14 @@ public class Game implements Serializable {
 
     public void setCategoryTable(List<Category> categoryTable) {
         this.categoryTable = categoryTable;
+    }
+
+    public List<User> getUserList() {
+        return userList;
+    }
+
+    public void setUserList(List<User> userList) {
+        this.userList = userList;
     }
 
     @Override

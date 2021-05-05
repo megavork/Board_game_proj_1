@@ -52,16 +52,6 @@ public class HibernateConfig {
         managerDataSource.setPassword(environment.getRequiredProperty("hibernate.connection.pool_size"));
         return managerDataSource;
     }
-/*    //не нужный
-    @Bean
-    public DataSource getJDBCdataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(environment.getRequiredProperty("jdbc.driverClassName"));
-        dataSource.setUrl(environment.getRequiredProperty("jdbc.url"));
-        dataSource.setUsername(environment.getRequiredProperty("jdbc.username"));
-        dataSource.setPassword(environment.getRequiredProperty("jdbc.password"));
-        return dataSource;
-    }*/
 
     /**
      * create SessionFactory with hibernate parameters and return it.

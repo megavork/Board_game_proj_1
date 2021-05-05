@@ -1,13 +1,19 @@
 package com.example.Board_game_proj_1.entity;
 
 import com.example.Board_game_proj_1.dto.UserDto;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
+import lombok.Generated;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 @Entity
@@ -15,17 +21,28 @@ import java.util.Collection;
 @Table(schema = "board_game_sch", name = "users")
 public class User implements Serializable, UserDetails {
 
+    private static final AtomicInteger count = new AtomicInteger(0);
+
     @Id
+    @Column(name = "userId")
+    private int userId;
     @Column(name = "username", length = 45)
-    String username;
+    private String username;
     @Column(name = "user_role")
-    String user_role;
+    private String user_role;
     @Column(name = "password", length = 100)
-    String password;
+    private String password;
     @Column(name = "email")
-    String email;
+    private String email;
     @Column(name = "token")
-    String token;
+    private String token;
+
+    @JsonBackReference
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable (name="orders",
+            joinColumns=@JoinColumn (name="userID"),
+            inverseJoinColumns=@JoinColumn(name="gameID"))
+    List<Game> orderGameList = new ArrayList<>();
 
     @Transient
     private boolean isAccountNonExpired;
@@ -38,13 +55,24 @@ public class User implements Serializable, UserDetails {
 
     public User() {
         this.user_role = "USER";
+        this.token = "";
+        this.enable();
     }
 
-    public void unlockAccount() {
+    public void enable() {
         this.isAccountNonExpired = true;
         this.isAccountNonLocked = true;
         this.isEnabled = true;
         this.isCredentialsNonExpired = true;
+    }
+
+    public User disable() {
+        this.isAccountNonExpired = false;
+        this.isAccountNonLocked = false;
+        this.isEnabled = false;
+        this.isCredentialsNonExpired = false;
+        this.setToken(null);
+        return this;
     }
 
     /**
@@ -61,10 +89,15 @@ public class User implements Serializable, UserDetails {
         this.password = password;
     }
 
-    public UserDto toUserDto(String login) {
+    public UserDto toUserDto() {
         UserDto userDto = new UserDto();
-        userDto.setUsername(login);
+        userDto.setUsername(this.getUsername());
+        userDto.setEmail(this.getEmail());
         return userDto;
+    }
+
+    public void setToken() {
+        this.setToken(UUID.randomUUID().toString());
     }
 
     @Override

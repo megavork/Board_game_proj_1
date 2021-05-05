@@ -4,6 +4,7 @@ import com.example.Board_game_proj_1.filter.AuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -50,8 +51,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(final WebSecurity webSecurity) {
-        //webSecurity.ignoring().antMatchers("/token/**", "/user", "/registr");
-        webSecurity.ignoring().antMatchers("/token/**", "/login", "/" ,"/categories/**","/games/**");
+        webSecurity
+                .ignoring()
+                .antMatchers("/catalog","/token/**", "/login","/games/**","/categories/**", "/register");    //
+        webSecurity.ignoring().antMatchers(HttpMethod.OPTIONS, "/**");
     }
 
     @Bean
@@ -73,28 +76,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .requestMatchers(PROTECTED_URLS)
                 .authenticated()
-
                 .and()
                 .csrf().disable()
                 .formLogin().disable()
                 .httpBasic().disable()
                 .logout().disable();
-        /*http.csrf().disable()
-                .antMatcher("/login")
-                .authorizeRequests()
-                .antMatchers("/login")
-                .permitAll();
-        http.authorizeRequests()
-//                .antMatchers("/hello").hasRole("ADMIN")
-                .anyRequest().permitAll();
-*/
+        http.authorizeRequests().
+                antMatchers(HttpMethod.OPTIONS, "/**").denyAll();
     }
 
     @Bean
     AuthenticationFilter authenticationFilter() throws Exception {
         final AuthenticationFilter filter = new AuthenticationFilter(PROTECTED_URLS);
         filter.setAuthenticationManager(authenticationManager());
-        //filter.setAuthenticationSuccessHandler(successHandler());
         return filter;
     }
 
