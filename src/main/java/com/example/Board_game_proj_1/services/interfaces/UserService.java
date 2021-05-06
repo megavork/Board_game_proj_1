@@ -7,11 +7,13 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 import java.util.Optional;
 
-public interface UserService extends OrderService{
+public interface UserService {
 
+    User findById(int ID);
     User findByLogin(String login);
     ResponseEntity save(User user);
     boolean update(User user);
+    boolean updateByID(int id, UserDto user);
     boolean delete(User user);
     List<UserDto> findAllUsers();
     String isAuthorized(UserDto userDto);

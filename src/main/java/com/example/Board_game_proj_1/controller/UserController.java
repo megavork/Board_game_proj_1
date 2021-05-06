@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.Arrays;
 
 @RestController
 public class UserController {
@@ -57,28 +58,24 @@ public class UserController {
         String userToken = token.substring(token.indexOf(" ")+1);
         User user = (User) userService.findByToken(userToken).get();
 
-        if(user.isEnabled()) {
+        if(!user.getToken().isEmpty() && user.getUser_role().equals("ADMIN")) {
             return ResponseEntity.status(HttpStatus.OK).body(userService.findAllUsers());
+        } else if(!user.getToken().isEmpty() && user.getUser_role().equals("USER")) {
+            return ResponseEntity.status(HttpStatus.OK).body(Arrays.asList(user.toUserDto()));
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("");
         }
     }
-    /*
-    edit user
-POST /user/:id
-with authorization header
-{ username: 'new username', email: 'new email', 'role': 'new role' }
-DO NOT OVERRIDE PASSWORD :)
-     */
-    @PostMapping(value = "/user/edit")
-    public ResponseEntity login(@RequestHeader(name = "Authorization") String token, @RequestBody UserDto userDto) {
+
+    @PostMapping(value = "/user/{userID}")
+    public ResponseEntity login(@PathVariable("userID") String id, @RequestHeader(name = "Authorization") String token, @RequestBody UserDto userDto) {
         String userToken = token.substring(token.indexOf(" ")+1);
         User user = (User) userService.findByToken(userToken).get();
 
-        if(user.getToken().equals(userToken)) {
-            return ResponseEntity.status(HttpStatus.OK).body(userService.update(userDto.toUser()));
+        if(user != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(userService.updateByID(Integer.parseInt(id),userDto));
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new UserDto());
         }
     }
 }

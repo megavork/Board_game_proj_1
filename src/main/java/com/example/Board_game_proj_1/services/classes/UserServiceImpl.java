@@ -1,11 +1,8 @@
 package com.example.Board_game_proj_1.services.classes;
 
-import com.example.Board_game_proj_1.dao.interfaces.OrderDao;
 import com.example.Board_game_proj_1.dao.interfaces.UserDao;
 import com.example.Board_game_proj_1.dto.UserDto;
-import com.example.Board_game_proj_1.entity.Game;
 import com.example.Board_game_proj_1.entity.User;
-import com.example.Board_game_proj_1.services.interfaces.OrderService;
 import com.example.Board_game_proj_1.services.interfaces.UserService;
 import com.example.Board_game_proj_1.util.JsonConverter;
 import lombok.NoArgsConstructor;
@@ -20,15 +17,18 @@ import java.util.Optional;
 
 @Service("customerService")
 @NoArgsConstructor
-public class UserServiceImpl implements UserService, OrderService {
+public class UserServiceImpl implements UserService {
 
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Autowired
     UserDao userDao;
 
-    @Autowired
-    OrderDao orderDao;
+    @Override
+    @Transactional
+    public User findById(int ID) {
+        return userDao.findById(ID);
+    }
 
     /**
      * Return User by using Login
@@ -80,6 +80,12 @@ public class UserServiceImpl implements UserService, OrderService {
         return userDao.update(user);
     }
 
+    @Override
+    @Transactional
+    public boolean updateByID(int id, UserDto user) {
+        return userDao.updateByID(id,user);
+    }
+
     /**
      * Delete one User from base
      * @param user
@@ -125,23 +131,5 @@ public class UserServiceImpl implements UserService, OrderService {
     @Transactional
     public boolean disableUser(String token) {
         return userDao.disableUser(token);
-    }
-
-    @Override
-    @Transactional
-    public boolean create(String username, List<String> gameIds) {
-        return orderDao.create(username,gameIds);
-    }
-
-    @Override
-    @Transactional
-    public boolean delete(String username, String orderId) {
-        return orderDao.delete(username, orderId);
-    }
-
-    @Override
-    @Transactional
-    public List<Game> getOrders(String username) {
-        return orderDao.getOrders(username);
     }
 }

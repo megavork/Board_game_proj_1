@@ -11,6 +11,7 @@ public class UserDto implements Serializable {
     private String email;
     private String user_role;
     private String password;
+    private int userID;
 
     public UserDto() {
         this.password = "";
@@ -24,15 +25,4 @@ public class UserDto implements Serializable {
         user.setEmail(this.getEmail());
         return user;
     }
-
-/*    public String toJson() {
-        ObjectMapper mapper = new ObjectMapper();
-        String object = null;
-        try {
-            object = mapper.writeValueAsString(this);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return object;
-    }*/
 }

@@ -47,12 +47,6 @@ public class Game implements Serializable {
     @Column(name = "average_user_rating")
     private float average_user_rating;
 
-    /*@JsonBackReference
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @JoinTable (name="depend_game_mech",
-            joinColumns=@JoinColumn (name="idGamesForMech"),
-            inverseJoinColumns=@JoinColumn(name="idMechanicForGame"))*/
     @JsonBackReference
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "gameList")
     List<Mechanic> mechanicsTable = new ArrayList<>();
@@ -62,8 +56,8 @@ public class Game implements Serializable {
     List<Category> categoryTable = new ArrayList<>();
 
     @JsonBackReference
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "orderGameList")
-    List<User> userList = new ArrayList<>();
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "games")
+    List<Order> ordersList = new ArrayList<>();
 
     public GameDto toGameDto() {
         GameDto gameDto = new GameDto();
@@ -212,12 +206,12 @@ public class Game implements Serializable {
         this.categoryTable = categoryTable;
     }
 
-    public List<User> getUserList() {
-        return userList;
+    public List<Order> getOrdersList() {
+        return ordersList;
     }
 
-    public void setUserList(List<User> userList) {
-        this.userList = userList;
+    public void setOrdersList(List<Order> ordersList) {
+        this.ordersList = ordersList;
     }
 
     @Override

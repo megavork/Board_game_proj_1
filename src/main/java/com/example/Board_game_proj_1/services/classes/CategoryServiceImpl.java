@@ -100,7 +100,6 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional
     public List<CategoryDto> getCountOfGameFromEachCategory (int category_count, int game_count, int page_number) {
-
         return categoryDao.getCountOfGameFromEachCategory(category_count,game_count, page_number);
     }
 }

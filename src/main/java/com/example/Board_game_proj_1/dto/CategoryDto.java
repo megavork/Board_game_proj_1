@@ -12,6 +12,4 @@ public class CategoryDto {
         String name;
 
         List<Game> gameList = new ArrayList<>();
-
-
 }

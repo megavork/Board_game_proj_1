@@ -19,11 +19,6 @@ public class Mechanic implements Serializable {
     @Column(name = "name")
     private String name;
 
-    /*@Transient
-    @ManyToMany(mappedBy="mechanics_game",fetch = FetchType.EAGER)
-    @JoinTable (name="depend_game_mech",
-            joinColumns=@JoinColumn (name="idMechanicForGame"),
-            inverseJoinColumns=@JoinColumn(name="idGamesForMech"))*/
     @JsonBackReference
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable (name="depend_game_mech",

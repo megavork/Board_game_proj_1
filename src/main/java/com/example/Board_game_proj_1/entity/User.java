@@ -1,17 +1,12 @@
 package com.example.Board_game_proj_1.entity;
 
 import com.example.Board_game_proj_1.dto.UserDto;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
-import lombok.Generated;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -36,13 +31,6 @@ public class User implements Serializable, UserDetails {
     private String email;
     @Column(name = "token")
     private String token;
-
-    @JsonBackReference
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable (name="orders",
-            joinColumns=@JoinColumn (name="userID"),
-            inverseJoinColumns=@JoinColumn(name="gameID"))
-    List<Game> orderGameList = new ArrayList<>();
 
     @Transient
     private boolean isAccountNonExpired;
@@ -93,6 +81,8 @@ public class User implements Serializable, UserDetails {
         UserDto userDto = new UserDto();
         userDto.setUsername(this.getUsername());
         userDto.setEmail(this.getEmail());
+        userDto.setUserID(this.getUserId());
+        userDto.setUser_role(this.getUser_role());
         return userDto;
     }
 

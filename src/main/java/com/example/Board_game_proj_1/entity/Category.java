@@ -13,6 +13,7 @@ public class Category implements Serializable {
     @Id
     @Column(name = "idCategories", length = 15)
     private String idCategories;
+
     @Column(name = "name")
     private String name;
 
@@ -21,7 +22,6 @@ public class Category implements Serializable {
 
     @JsonBackReference
     @ManyToMany(fetch = FetchType.LAZY)
-    //@Fetch(FetchMode.JOIN)
     @JoinTable (name="depend_game_category",
             joinColumns=@JoinColumn (name="idCategoryForGame"),
             inverseJoinColumns=@JoinColumn(name="idGamesForCateg"))
@@ -79,15 +79,4 @@ public class Category implements Serializable {
         //categoryDto.setGameList(this.gameList);
         return categoryDto;
     }
-
-
-/*    //@Transient
-    //@ManyToMany(mappedBy="categories_game",fetch = FetchType.EAGER)
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @LazyCollection(LazyCollectionOption.TRUE)
-    //@Fetch(FetchMode.JOIN)
-    @JoinTable (name="depend_game_category",
-            joinColumns=@JoinColumn (name="idCategoryForGame"),
-            inverseJoinColumns=@JoinColumn(name="idGamesForCateg"))*/
-
 }
