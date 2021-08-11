@@ -21,7 +21,6 @@ public class Order implements Serializable {
     @Column(name = "userID")
     private int userID;
 
-    @JsonBackReference
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable (name="depend_game_order",
             joinColumns=@JoinColumn (name="orderID"),

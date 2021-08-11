@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class JSONParser {
 
-    public static JSONArray JSONParser(String jsonLine, String objectName) throws IOException {
+    public static JSONArray JSONParser(String jsonLine, String objectName) {
 
         JSONObject jsonObject = new JSONObject(jsonLine);
         JSONArray array =  jsonObject.getJSONArray(objectName);

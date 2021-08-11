@@ -13,8 +13,12 @@ import java.util.List;
 @Service
 public class OrderServiceImpl implements OrderService {
 
-    @Autowired
     private OrderDao orderDao;
+
+    @Autowired
+    private OrderServiceImpl(OrderDao orderDao) {
+        this.orderDao = orderDao;
+    }
 
     @Override
     @Transactional

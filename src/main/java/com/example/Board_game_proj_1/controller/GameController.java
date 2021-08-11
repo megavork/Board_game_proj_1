@@ -2,6 +2,7 @@ package com.example.Board_game_proj_1.controller;
 
 import com.example.Board_game_proj_1.dto.GameDto;
 import com.example.Board_game_proj_1.entity.Game;
+import com.example.Board_game_proj_1.filter.ResponseEntityFilter;
 import com.example.Board_game_proj_1.services.interfaces.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,20 +22,15 @@ public class GameController {
     @PostMapping(value = "/games/list")
     public ResponseEntity getGamesByList(@RequestBody Map<String, List> object) {
         List objectList = object.get("gameIds");
-
         List<Game> gameList = gameService.findByListId(objectList);
 
-        if(gameList.isEmpty())
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(gameList);
-        else if(gameList.size() != objectList.size())
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(gameList);
-        else
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(gameList);
+        return ResponseEntityFilter.getListHttpCode(gameList);
     }
 
+    /**
+     * It was used just to upload data in base from free API. Not using in my API
+     * @return
+     */
     @RequestMapping(value = "/upload", method = RequestMethod.GET)
     public ResponseEntity uploadGamesFromAPI() {
         try {
@@ -55,25 +51,13 @@ public class GameController {
     @GetMapping(value = "/games/{idGame}")
     public ResponseEntity getDtoGame(@PathVariable("idGame") String id)  {
         GameDto gameDto = gameService.findDTOById(id);
-        if(gameDto != null) {
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(gameDto);
-        } else {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT)
-                    .body(new GameDto());
-        }
+        return ResponseEntityFilter.getObjectHttpCode(gameDto);
     }
 
     @RequestMapping(value = "/getGameById", method = RequestMethod.GET)
     public ResponseEntity getGame(String ID)  {
         Game game = gameService.findById(ID);
-        if(game != null) {
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(game);
-        } else {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT)
-                    .body(new Game());
-        }
+        return ResponseEntityFilter.getObjectHttpCode(game);
     }
 /*
     @GetMapping(value = "/gameCategory/id={idGame}")

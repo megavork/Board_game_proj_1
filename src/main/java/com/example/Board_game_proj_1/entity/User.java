@@ -76,7 +76,7 @@ public class User implements Serializable, UserDetails {
         this.email = email;
         this.password = password;
     }
-
+    //userservice convertor
     public UserDto toUserDto() {
         UserDto userDto = new UserDto();
         userDto.setUsername(this.getUsername());
@@ -85,7 +85,7 @@ public class User implements Serializable, UserDetails {
         userDto.setUser_role(this.getUser_role());
         return userDto;
     }
-
+    //maybe 
     public void setToken() {
         this.setToken(UUID.randomUUID().toString());
     }
